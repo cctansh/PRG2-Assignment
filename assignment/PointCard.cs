@@ -36,13 +36,14 @@ namespace assignment
             Tier = "Ordinary";
 
         }
-        public void AddPoints()
+  
+        public void AddPoints(int i)
         {
-            Points += Points;
+            Points += i;
         }
-        public void RedeemPoints()
+        public void RedeemPoints(int i)
         {
-           Points -= Points;
+           Points -= i;
         }
         public void Punch()
         {
@@ -56,8 +57,9 @@ namespace assignment
 
         public override string ToString()
         {
-            return base.ToString();
+            return $"Current Points is {Points}, your punchcard has {PunchCard} punches and your Membership Tier is {Tier}";
         }
+
 
     }
 }

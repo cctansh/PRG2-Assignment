@@ -32,7 +32,7 @@ namespace assignment
         }
         public override string ToString()
         {
-            return $"Flavour: {Type}    Premium?: {Premium}    Quantity: {Quantity}";
+            return $"Flavour: {Type}, Premium?: {Premium}, Quantity: {Quantity}";
         }
     }
 }

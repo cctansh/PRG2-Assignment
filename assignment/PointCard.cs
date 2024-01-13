@@ -29,22 +29,35 @@ namespace assignment
         }
 
         public PointCard() { }
-        public PointCard(int points, int punchCard, string tier)
+        public PointCard(int points, int punchCard)
         {
             Points = points;
             PunchCard = punchCard;
-            Tier = tier;
-        }
-        public int AddPoints()
-        {
-            return Math.Floor(totalSpent * 0.72);
-        }
-        public int RedeemPoints()
-        {
-            return usePoint * 0.02;
-        }
-        public Punch() { }
+            Tier = "Ordinary";
 
-        
+        }
+        public void AddPoints()
+        {
+            Points += Points;
+        }
+        public void RedeemPoints()
+        {
+           Points -= Points;
+        }
+        public void Punch()
+        {
+            PunchCard++;
+            if (PunchCard == 11)
+            {
+                PunchCard = 0;
+            }
+            
+        }
+
+        public override string ToString()
+        {
+            return base.ToString();
+        }
+
     }
 }

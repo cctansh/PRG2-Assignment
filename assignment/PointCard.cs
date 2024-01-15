@@ -33,8 +33,18 @@ namespace assignment
         {
             Points = points;
             PunchCard = punchCard;
-            Tier = "Ordinary";
-
+            if (Points >= 100)
+            {
+                Tier = "Gold";
+            }
+            else if (Points >= 50)
+            {
+                Tier = "Silver";
+            }
+            else
+            {
+                Tier = "Ordinary";
+            }
         }
   
         public void AddPoints(int i)
@@ -50,7 +60,7 @@ namespace assignment
             PunchCard++;
             if (PunchCard == 11)
             {
-                PunchCard = 0;
+                PunchCard = 10;
             }
             
         }

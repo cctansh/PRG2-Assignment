@@ -11,9 +11,9 @@ namespace assignment
         public Cup() { }
 
         public Cup(string option, int scoop, List<string> flavours, List<string> toppings)
-            : base(option, scoop, flavours, toppings)
+            : base(scoop, flavours, toppings)
         {
-            
+            option = "Cup";
         }
 
         public override double CalculatePrice()

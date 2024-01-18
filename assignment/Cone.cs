@@ -7,39 +7,58 @@ using System.Threading.Tasks;
 
 namespace assignment
 {
-    public class Cone : IceCream
+    internal class Cone : IceCream
     {
         public bool Dipped;
 
         public Cone() { }
 
 
-        public Cone(string option, int scoop, List<string> flavours, List<string> toppings, bool dipped)
-            : base(option, scoop, flavours, toppings)
+        public Cone(int s, List<Flavour> f, List<Topping> t, string waffleFlavour)
+            : base("Cone", s, f, t)
         {
-            this.Dipped = dipped;
+            this.Dipped = Dipped;
         }
 
         public override double CalculatePrice()
         {
-            double basePrice = 2.5;
-            double scoopPrice = 1.5 * Scoops;
-            double premiumFlavours = 2 * Scoops;
-            double toppingPrice = Toppings * 1;
+            // Base price for Cone
+            double basePrice = 4.00;
 
-            if (dipped == true)
+            // Additional cost for scoops
+            double scoopPrice = Scoops switch
             {
-                return base.CalculatePrice() + 2.0;
+                1 => 4.00,
+                2 => 5.50,
+                3 => 6.50,
+            };
+
+            // Additional cost for premium flavors
+            double premiumFlavorPrice = Flavours.Count(f => f.ToLower() == "durian" || f.ToLower() == "ube" || f.ToLower() == "sea salt") * 2.0;
+
+            // Additional cost for each topping
+            double toppingsPrice = Toppings.Count * 1.0;
+
+            // Additional cost for dipped cone
+            double dippedPrice;
+            if (Dipped)
+            {
+                dippedPrice = 2.0;
             }
             else
             {
-                return base.CalculatePrice();
+                dippedPrice = 0.0;
             }
+
+            double totalPrice = basePrice + scoopPrice + premiumFlavorPrice + toppingsPrice + dippedPrice;
+
+            return totalPrice;
         }
 
         public override string ToString()
         {
-            return $"Cone: {base.ToString()}";
+            double totalPrice = CalculatePrice(); 
+            return $"Cone: {totalPrice:C2}";
         }
     }
 }

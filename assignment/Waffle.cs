@@ -15,14 +15,11 @@ namespace assignment
         public Waffle(int s, List<Flavour> f, List<Topping> t, string waffleFlavour)
             : base("Waffle", s, f, t)
         {
-            this.WaffleFlavour = waffleFlavour;
+            WaffleFlavour = waffleFlavour;
         }
 
         public override double CalculatePrice()
         {
-            // Base price for Waffle
-            double basePrice = 7.00;
-
             // Additional cost for scoops
             double scoopPrice = Scoops switch
             {
@@ -32,22 +29,26 @@ namespace assignment
             };
 
             // Additional cost for premium flavors
-            double premiumFlavor = Flavours.Count(flavour => flavour.Type == "Durian" || flavour.Type == "Ube" || flavour.Type == "Sea Salt") * 2.0;
+            double premiumFlavorPrice = 0;
+            foreach (Flavour flavour in Flavours)
+            {
+                if (flavour.Type == "Durian" || flavour.Type == "Ube" || flavour.Type == "Sea Salt")
+                {
+                    premiumFlavorPrice += 2 * flavour.Quantity;
+                }
+            }
 
             // Additional cost for each topping
             double toppingsPrice = Toppings.Count * 1.0;
 
             // Additional cost for waffle flavor
-            double PremiumWaffle;
-            if (WaffleFlavour == "Red Velvet" || WaffleFlavour == "Charcoal" || WaffleFlavour == "Pandan")
+            double PremiumWaffle = 0;
+            if (WaffleFlavour != "Original")
             {
                 PremiumWaffle = 3.0;
             }
-            else
-            {
-                PremiumWaffle = 0.0;
-            }
-            double totalPrice = basePrice + scoopPrice + premiumFlavor + toppingsPrice + PremiumWaffle;
+
+            double totalPrice = scoopPrice + premiumFlavorPrice + toppingsPrice + PremiumWaffle;
             return totalPrice;
         }
         

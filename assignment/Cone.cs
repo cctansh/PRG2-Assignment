@@ -22,9 +22,6 @@ namespace assignment
 
         public override double CalculatePrice()
         {
-            // Base price for Cone
-            double basePrice = 4.00;
-
             // Additional cost for scoops
             double scoopPrice = Scoops switch
             {
@@ -34,7 +31,14 @@ namespace assignment
             };
 
             // Additional cost for premium flavors
-            double premiumFlavorPrice = Flavours.Count(flavour => flavour.Type == "Durian" || flavour.Type == "Ube" || flavour.Type == "Sea Salt") * 2.0;
+            double premiumFlavorPrice = 0;
+            foreach (Flavour flavour in Flavours)
+            {
+                if (flavour.Type == "Durian" || flavour.Type == "Ube" || flavour.Type == "Sea Salt")
+                {
+                    premiumFlavorPrice += 2 * flavour.Quantity;
+                }
+            }
 
             // Additional cost for each topping
             double toppingsPrice = Toppings.Count * 1.0;
@@ -50,7 +54,7 @@ namespace assignment
                 dippedPrice = 0.0;
             }
 
-            double totalPrice = basePrice + scoopPrice + premiumFlavorPrice + toppingsPrice + dippedPrice;
+            double totalPrice = scoopPrice + premiumFlavorPrice + toppingsPrice + dippedPrice;
 
             return totalPrice;
         }

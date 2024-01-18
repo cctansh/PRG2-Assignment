@@ -6,14 +6,12 @@ using System.Threading.Tasks;
 
 namespace assignment
 {
-    public class Cup : IceCream
+    internal class Cup : IceCream
     {
         public Cup() { }
 
-        public Cup(string option, int scoop, List<string> flavours, List<string> toppings)
-            : base(option, scoop, flavours, toppings)
+        public Cup(string o, int s, List<Flavour> f, List<Topping> t) : base("Cup", s, f, t)
         {
-            
         }
 
         public override double CalculatePrice()

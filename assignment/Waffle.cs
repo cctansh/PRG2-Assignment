@@ -32,26 +32,29 @@ namespace assignment
             };
 
             // Additional cost for premium flavors
-            double premiumFlavorPrice = Flavours.Count(f => f.ToLower() == "durian" || f.ToLower() == "ube" || f.ToLower() == "sea salt") * 2.0;
+            double premiumFlavor = Flavours.Count(flavour => flavour.Type == "Durian" || flavour.Type == "Ube" || flavour.Type == "Sea Salt") * 2.0;
 
             // Additional cost for each topping
             double toppingsPrice = Toppings.Count * 1.0;
 
             // Additional cost for waffle flavor
-            double waffleFlavorPrice = PremiumWaffleFlavor(WaffleFlavour) ? 3.0 : 0.0;
-
-            return basePrice + scoopPrice + premiumFlavorPrice + toppingsPrice + waffleFlavorPrice;
+            double PremiumWaffle;
+            if (WaffleFlavour == "Red Velvet" || WaffleFlavour == "Charcoal" || WaffleFlavour == "Pandan")
+            {
+                PremiumWaffle = 3.0;
+            }
+            else
+            {
+                PremiumWaffle = 0.0;
+            }
+            double totalPrice = basePrice + scoopPrice + premiumFlavor + toppingsPrice + PremiumWaffle;
+            return totalPrice;
         }
-        private bool PremiumWaffleFlavor(string flavor)
-        {
-            // Check if the flavor is a special waffle flavor
-            return flavor.ToLower() == "red velvet" || flavor.ToLower() == "charcoal" || flavor.ToLower() == "pandan";
-        }
-
+        
         public override string ToString()
         {
             double totalPrice = CalculatePrice();
-            return $"Waffle ({WaffleFlavour}): {base.ToString()}, Total Price: {totalPrice:C2}";
+            return $"Waffle ({WaffleFlavour}), Total Price: {totalPrice:C2}";
         }
 
     }

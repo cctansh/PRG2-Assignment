@@ -10,7 +10,7 @@ namespace assignment
     {
         public Cup() { }
 
-        public Cup(string o, int s, List<Flavour> f, List<Topping> t) : base("Cup", s, f, t)
+        public Cup(int s, List<Flavour> f, List<Topping> t) : base("Cup", s, f, t)
         {
         }
 

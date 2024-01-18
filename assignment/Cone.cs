@@ -14,10 +14,10 @@ namespace assignment
         public Cone() { }
 
 
-        public Cone(int s, List<Flavour> f, List<Topping> t, string waffleFlavour)
+        public Cone(int s, List<Flavour> f, List<Topping> t, bool d)
             : base("Cone", s, f, t)
         {
-            this.Dipped = Dipped;
+            Dipped = d;
         }
 
         public override double CalculatePrice()

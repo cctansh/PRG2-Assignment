@@ -34,7 +34,7 @@ namespace assignment
             };
 
             // Additional cost for premium flavors
-            double premiumFlavorPrice = Flavours.Count(f => f.ToLower() == "durian" || f.ToLower() == "ube" || f.ToLower() == "sea salt") * 2.0;
+            double premiumFlavorPrice = Flavours.Count(flavour => flavour.Type == "Durian" || flavour.Type == "Ube" || flavour.Type == "Sea Salt") * 2.0;
 
             // Additional cost for each topping
             double toppingsPrice = Toppings.Count * 1.0;

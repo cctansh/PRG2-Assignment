@@ -54,8 +54,7 @@ namespace assignment
         
         public override string ToString()
         {
-            double totalPrice = CalculatePrice();
-            return $"Waffle ({WaffleFlavour}), Total Price: {totalPrice:C2}";
+            return base.ToString() + $", Waffle Flavour: {WaffleFlavour}";
         }
 
     }

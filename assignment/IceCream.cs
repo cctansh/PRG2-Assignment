@@ -51,6 +51,7 @@ namespace assignment
             {
                 t += item.Type + " ";
             }
+            t = t.Remove(t.Length - 1);
             return $"Option: {Option}, Scoops: {Scoops}, Flavours: {f}, Toppings: {t}";
         }
 

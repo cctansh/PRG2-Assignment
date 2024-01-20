@@ -40,8 +40,7 @@ namespace assignment
 
         public override string ToString()
         {
-            double totalPrice = CalculatePrice();
-            return $"Cup: {totalPrice:C2}";
+            return base.ToString();
         }
     }
 }

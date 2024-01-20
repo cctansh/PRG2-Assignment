@@ -61,8 +61,7 @@ namespace assignment
 
         public override string ToString()
         {
-            double totalPrice = CalculatePrice(); 
-            return $"Cone: {totalPrice:C2}";
+            return base.ToString() + $", Dipped?: {Dipped}";
         }
     }
 }

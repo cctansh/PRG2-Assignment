@@ -396,7 +396,14 @@ namespace assignment
             {
                 ic += item.ToString() + "\n";
             }
-            return $"ID: {Id}, Time Received: {TimeReceived}, Time Fulfilled: {TimeFulfilled}, Ice Cream List:\n{ic}";
+            if (TimeFulfilled != null)
+            {
+                return $"ID: {Id}, Time Received: {TimeReceived}, Time Fulfilled: {TimeFulfilled}, Ice Cream List:\n{ic}";
+            }
+            else
+            {
+                return $"ID: {Id}, Time Received: {TimeReceived}, Time Fulfilled: Unfulfilled, Ice Cream List:\n{ic}";
+            }
         }
     }
 }

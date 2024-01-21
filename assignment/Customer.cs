@@ -44,9 +44,9 @@ namespace assignment
             Name = n;
             MemberId = m;
             Dob = d;
-            currentOrder = new Order();
+            currentOrder = null;
             OrderHistory = new List<Order>();
-            Rewards = new PointCard();
+            Rewards = new PointCard(0, 0);
         }
         public Order MakeOrder()
         {

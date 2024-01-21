@@ -339,12 +339,15 @@ namespace assignment
 
             void AddFlavour(string flavour, bool premium)
             {
-                foreach (Flavour listFlavour in flavours)
+                if (flavours.Count > 0)
                 {
-                    if (listFlavour.Type == flavour)
+                    foreach (Flavour listFlavour in flavours)
                     {
-                        listFlavour.Quantity += 1;
-                        return;
+                        if (listFlavour.Type == flavour)
+                        {
+                            listFlavour.Quantity += 1;
+                            return;
+                        }
                     }
                 }
                 flavours.Add(new Flavour(flavour, premium, 1));
@@ -353,12 +356,15 @@ namespace assignment
 
             bool HasTopping(string topping)
             {
-                foreach (Topping listTopping in toppings)
+                if (toppings.Count > 0)
                 {
-                    if (listTopping.Type == topping)
+                    foreach (Topping listTopping in toppings)
                     {
-                        Console.WriteLine("Cannot have multiple of the same topping."); 
-                        return true;
+                        if (listTopping.Type == topping)
+                        {
+                            Console.WriteLine("Cannot have multiple of the same topping.");
+                            return true;
+                        }
                     }
                 }
                 return false;

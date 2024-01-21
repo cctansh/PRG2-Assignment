@@ -47,13 +47,19 @@ namespace assignment
             }
             f = f.Remove(f.Length - 1);
             string t = "";
-            foreach (var item in Toppings)
+            if (Toppings.Count > 0)
             {
-                t += item.Type + " ";
+                foreach (var item in Toppings)
+                {
+                    t += item.Type + " ";
+                }
+                t = t.Remove(t.Length - 1);
+                return $"Option: {Option}, Scoops: {Scoops}, Flavours: {f}, Toppings: {t}";
             }
-            t = t.Remove(t.Length - 1);
-            return $"Option: {Option}, Scoops: {Scoops}, Flavours: {f}, Toppings: {t}";
+            else
+            {
+                return $"Option: {Option}, Scoops: {Scoops}, Flavours: {f}, Toppings: None";
+            }
         }
-
     }
 }

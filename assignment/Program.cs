@@ -1,5 +1,6 @@
 ﻿using assignment;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 List<Customer> customerList = new List<Customer>();
 Queue<Order> regularOrders = new Queue<Order>();
@@ -12,7 +13,7 @@ void DisplayCustomers()
 }
 
 // Q2: List all current orders
-void DisplayOrders()
+void DisplayOrderQueues()
 {
     if (regularOrders.Count > 0)
     {
@@ -53,7 +54,60 @@ void DisplayOrders()
 void DisplayCustomerOrder()
 {
     DisplayCustomers();
-    Console.WriteLine("Select a customer: ");
+    while (true)
+    {
+        try
+        {
+            // user selects customer
+            Console.Write("Select a customer: ");
+            int icIndex = int.Parse(Console.ReadLine());
+            Customer selectedC = customerList[icIndex - 1];
+
+            Console.WriteLine();
+
+            // display customer current order
+            try
+            {
+                Console.WriteLine("Current Order: ");
+                Console.WriteLine(selectedC.CurrentOrder.ToString());
+            }
+            catch (NullReferenceException)
+            {
+                Console.WriteLine("No current order.");
+            }
+
+            Console.WriteLine();
+
+            // display customer past orders
+            if (selectedC.OrderHistory.Count > 0)
+            {
+                Console.WriteLine("Past Orders: ");
+                foreach (Order order in selectedC.OrderHistory)
+                {
+                    int i = 1;
+                    Console.WriteLine($"Order {i}: " + order.ToString());
+                    i++;
+                }
+            }
+            else
+            {
+                Console.WriteLine("No past orders.");
+            }
+
+            // all code executed successfully, break infinite loop
+            break;
+        }
+        // if user entered non-int value
+        catch (FormatException)
+        {
+            Console.WriteLine("Invalid option. Please enter an integer value.");
+        }
+        // if user selected a number not within customer list range
+        catch (IndexOutOfRangeException)
+        {
+            Console.WriteLine($"Invalid option. Please enter a number from 1 to {customerList.Count}");
+        }
+    }
 }
 
 // Q6: Modify order details

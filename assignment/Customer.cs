@@ -50,7 +50,8 @@ namespace assignment
         }
         public Order MakeOrder()
         {
-            // do things
+            // temp code for testing
+            return new Order();
         }
         public bool IsBirthday()
         {

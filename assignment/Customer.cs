@@ -50,8 +50,36 @@ namespace assignment
         }
         public Order MakeOrder()
         {
-            // temp code for testing
-            return new Order();
+            string o;
+
+            // id is temp id, to modify in program based on orderList
+            Order cOrder = new Order(0, DateTime.Now);
+
+            while (true)
+            {
+                Console.WriteLine("Add an ice cream: ");
+                IceCream ic = Program.CreateIceCream();
+                cOrder.AddIceCream(ic);
+                while (true)
+                {
+                    Console.Write("Would you like to add another ice cream to your order? (Y/N): ");
+                    o = Console.ReadLine();
+                    if (o.ToUpper() == "Y" || o.ToUpper() == "N")
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid option. Please enter Y or N.");
+                    }
+                }
+                if (o.ToUpper() == "N")
+                {
+                    Console.WriteLine("Order created.");
+                    return cOrder;
+                }
+                Console.WriteLine();
+            }
         }
         public bool IsBirthday()
         {

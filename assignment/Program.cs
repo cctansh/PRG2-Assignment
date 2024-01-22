@@ -275,7 +275,7 @@ namespace assignment
             }
         }
 
-        IceCream CreateIceCream()
+        public static IceCream CreateIceCream()
         {
             Console.WriteLine("Options:\n[1] Cup\n[2] Cone\n[3] Waffle");
 

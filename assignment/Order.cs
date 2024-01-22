@@ -40,8 +40,6 @@ namespace assignment
         }
         public void ModifyIceCream(int c)
         {
-            List<Flavour> flavours = new List<Flavour>();
-            List<Topping> toppings = new List<Topping>();
             IceCream currentIC = iceCreamList[c - 1];
 
             while (true)
@@ -66,15 +64,13 @@ namespace assignment
                 }
                 else if (option == "3")
                 {
-                    flavours = Program.ChooseFlavours(currentIC.Scoops);
+                    List<Flavour> flavours = Program.ChooseFlavours(currentIC.Scoops);
                     currentIC.Flavours = flavours;
-                    flavours.Clear();
                 }
                 else if (option == "4")
                 {
-                    toppings = Program.ChooseToppings();
+                    List<Topping> toppings = Program.ChooseToppings();
                     currentIC.Toppings = toppings;
-                    toppings.Clear();
                 }
                 else if (option == "0")
                 {

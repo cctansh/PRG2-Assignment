@@ -62,7 +62,7 @@ namespace assignment
             {
                 PunchCard = 10;
             }
-            
+
         }
 
         public override string ToString()

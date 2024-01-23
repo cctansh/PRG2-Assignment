@@ -9,8 +9,6 @@ namespace assignment
 {
     internal class Program
     {
-        private readonly IEnumerable<object> cList;
-
         private static void Main(string[] args)
         {
             List<Customer> customerList = new List<Customer>();
@@ -174,7 +172,7 @@ namespace assignment
         // Q5: Display order details of a customer
         void DisplayCustomerOrder(List<Customer> customerList)
         {
-            DisplayCustomers();
+            DisplayCustomers(customerList);
 
             while (true)
             {
@@ -235,7 +233,7 @@ namespace assignment
         // Q6: Modify order details
         void ModifyCustomerOrder(List<Customer> customerList)
         {
-            DisplayCustomers();
+            DisplayCustomers(customerList);
             while (true)
             {
                 try

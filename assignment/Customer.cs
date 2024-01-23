@@ -99,7 +99,7 @@ namespace assignment
             {
                 h += o.ToString();
             }
-            return $"Name: {Name}, Member ID: {MemberId}, DoB: {Dob}\nCurrent Order is: {currentOrder}Order History is:\n{h}Point Card Details: {Rewards.ToString()}";
+            return $"Name: {Name}, Member ID: {MemberId}, DoB: {Dob}, Tier: {Rewards.Tier}";
         }
     }
 }

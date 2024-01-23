@@ -9,6 +9,8 @@ namespace assignment
 {
     internal class Program
     {
+        private readonly IEnumerable<object> cList;
+
         private static void Main(string[] args)
         {
             List<Customer> customerList = new List<Customer>();
@@ -21,21 +23,68 @@ namespace assignment
         // add customers from csv
         void InitialiseCustomers(List<Customer> cList)
         {
+            // Specify the path to the CSV file
+            string csvFilePath = "customers.csv";
 
+            using (StreamReader reader = new StreamReader(csvFilePath))
+            {
+                // Skip the header line
+                reader.ReadLine();
+
+                while (!reader.EndOfStream)
+                {
+                    string line = reader.ReadLine();
+                    string[] fields = line.Split(',');
+
+                    // Assuming the structure: Name, MemberId, DOB, MembershipStatus, MembershipPoints, PunchCard
+                    string name = fields[0];
+                    int memberId = int.Parse(fields[1]);
+                    DateTime dob = DateTime.Parse(fields[2]);
+                    string membershipStatus = fields[3];
+                    int membershipPoints = int.Parse(fields[4]);
+                    int punchCard = int.Parse(fields[5]);
+
+                    // Add the customer information to the list
+                        cList.Add(new Customer(name,memberId,dob));
+                }
+            }
         }
+
+
+
+
 
         // print main option menu
         void DisplayMenu()
         {
+            Console.WriteLine("I.C. Treats");
+            Console.WriteLine("=================================");
+            Console.WriteLine("[1] List all customers");
+            Console.WriteLine("[2] List all current orders");
+            Console.WriteLine("[3] Register a new customer");
+            Console.WriteLine("[4] Create a customer's order");
+            Console.WriteLine("[5] Display order details of a customer");
+            Console.WriteLine("[6] Modify order details");
+            Console.WriteLine("[7] Process an order and checkout");
+            Console.WriteLine("[8] Display monthly charged amounts breakdown and total charged amounts for the year");
+            Console.WriteLine("[0] Exit");
+            Console.Write("Enter your option: ");
 
         }
 
 
         // Q1: List all customers
-        void DisplayCustomers()
+         void DisplayCustomers(List<Customer> cList)
         {
+            int i = 1;
+            foreach (var c in cList)
+            {
+                Console.WriteLine($"[{i}] " + c.ToString());
+                i++;
+            }
 
         }
+
 
         // Q2: List all current orders
         void DisplayOrderQueues(Queue<Order> regularOrders, Queue<Order> goldOrders)
@@ -75,8 +124,52 @@ namespace assignment
         }
 
         // Q3:
+        static void RegisterNewCustomer()
+        {
+            Console.WriteLine("Register a new customer:");
+
+            // Prompt user for information
+            Console.Write("Enter name: ");
+            string name = Console.ReadLine();
+
+            Console.Write("Enter ID number: ");
+            int memberId = int.Parse(Console.ReadLine());
+
+            Console.Write("Enter date of birth (e.g., MM/dd/yyyy): ");
+            DateTime dob = DateTime.Parse(Console.ReadLine());
+
+            // Create a new customer object
+            Customer newCustomer = new Customer
+            {
+                Name = name,
+                MemberId = memberId,
+                Dob = dob,
+                Rewards = new PointCard(0, 0),  // Creating a new PointCard for the customer
+            };
+
+            // Append customer information to customers.csv file
+            AppendCustomerToCsv(newCustomer);
+
+            Console.WriteLine("Customer registered successfully!");
+        }
+
+        static void AppendCustomerToCsv(Customer customer)
+        {
+            // Specify the path to the CSV file
+            string csvFilePath = "customers.csv";
+
+            // Append customer information to the file
+            using (StreamWriter writer = File.AppendText(csvFilePath))
+            {
+                int i = 1;
+                writer.WriteLine($"[{i}] " + customer.ToString());
+                i++;
+            }
+        }
 
         // Q4:
+
+
 
         // Q5: Display order details of a customer
         void DisplayCustomerOrder(List<Customer> customerList)

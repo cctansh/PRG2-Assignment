@@ -40,9 +40,9 @@ namespace assignment
             if (regularOrders.Count > 0)
             {
                 Console.WriteLine("Current orders in regular queue:");
+                int i = 1;
                 foreach (var order in regularOrders)
                 {
-                    int i = 1;
                     Console.WriteLine($"Order {i}: " + order.ToString());
                     i++;
                 }
@@ -57,9 +57,9 @@ namespace assignment
             if (goldOrders.Count > 0)
             {
                 Console.WriteLine("Current orders in gold members queue:");
+                int i = 1;
                 foreach (var order in goldOrders)
                 {
-                    int i = 1;
                     Console.WriteLine($"Order {i}: " + order.ToString());
                     i++;
                 }
@@ -107,9 +107,9 @@ namespace assignment
                     if (selectedC.OrderHistory.Count > 0)
                     {
                         Console.WriteLine("Past Orders: ");
+                        int i = 1;
                         foreach (Order order in selectedC.OrderHistory)
                         {
-                            int i = 1;
                             Console.WriteLine($"Order {i}: " + order.ToString());
                             i++;
                         }
@@ -221,9 +221,9 @@ namespace assignment
         {
             // display ice creams
             Console.WriteLine("Ice creams in current order:");
+            int i = 1;
             foreach (IceCream ic in cOrder.IceCreamList)
             {
-                int i = 1;
                 Console.WriteLine($"[{i}]: " + ic.ToString());
                 i++;
             }
@@ -559,5 +559,8 @@ namespace assignment
             }
             return false;
         }
+
+        // advanced (a)
+        // to associate order with member, check and match the order id (unique among all orders!!)
     }
 }

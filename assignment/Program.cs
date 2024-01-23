@@ -408,27 +408,27 @@ namespace assignment
                     string oF = Console.ReadLine();
                     if (oF == "1")
                     {
-                        fList = AddFlavour("Vanilla", false, fList);
+                        AddFlavour("Vanilla", false, fList);
                     }
                     else if (oF == "2")
                     {
-                        fList = AddFlavour("Chocolate", false, fList);
+                        AddFlavour("Chocolate", false, fList);
                     }
                     else if (oF == "3")
                     {
-                        fList = AddFlavour("Strawberry", false, fList);
+                        AddFlavour("Strawberry", false, fList);
                     }
                     else if (oF == "4")
                     {
-                        fList = AddFlavour("Durian", true, fList);
+                        AddFlavour("Durian", true, fList);
                     }
                     else if (oF == "5")
                     {
-                        fList = AddFlavour("Ube", true, fList);
+                        AddFlavour("Ube", true, fList);
                     }
                     else if (oF == "6")
                     {
-                        fList = AddFlavour("Sea Salt", true, fList);
+                        AddFlavour("Sea Salt", true, fList);
 
                     }
                     else
@@ -441,7 +441,7 @@ namespace assignment
             }
             return fList;
         }
-        public static List<Flavour> AddFlavour(string flavour, bool premium, List<Flavour> flavours)
+        public static void AddFlavour(string flavour, bool premium, List<Flavour> flavours)
         {
             if (flavours.Count > 0)
             {
@@ -450,12 +450,12 @@ namespace assignment
                     if (listFlavour.Type == flavour)
                     {
                         listFlavour.Quantity += 1;
-                        return flavours;
+                        return;
                     }
                 }
             }
             flavours.Add(new Flavour(flavour, premium, 1));
-            return flavours;
+            return;
         }
 
         public static List<Topping> ChooseToppings()

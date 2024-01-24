@@ -54,11 +54,11 @@ namespace assignment
                     t += item.Type + " ";
                 }
                 t = t.Remove(t.Length - 1);
-                return $"Option: {Option}, Scoops: {Scoops}, Flavours: {f}, Toppings: {t}";
+                return $"Option: {Option}\nScoops: {Scoops}\nFlavours: {f}\nToppings: {t}";
             }
             else
             {
-                return $"Option: {Option}, Scoops: {Scoops}, Flavours: {f}, Toppings: None";
+                return $"Option: {Option}\nScoops: {Scoops}\nFlavours: {f}\nToppings: None";
             }
         }
     }

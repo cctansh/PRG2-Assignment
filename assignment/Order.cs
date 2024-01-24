@@ -200,17 +200,18 @@ namespace assignment
         public override string ToString()
         {
             string ic = "";
-            foreach (var item in IceCreamList)
+            for (int i = 1; i <= IceCreamList.Count; i++)
             {
-                ic += item.ToString() + "\n";
+                ic += $"Ice Cream [{i}]:\n{IceCreamList[i-1]}\n\n";
             }
+
             if (TimeFulfilled != null)
             {
-                return $"ID: {Id}, Time Received: {TimeReceived}, Time Fulfilled: {TimeFulfilled}, Ice Cream List:\n{ic}";
+                return $"ID: {Id}\nTime Received: {TimeReceived}\nTime Fulfilled: {TimeFulfilled}\n\nIce Cream List:\n\n{ic}";
             }
             else
             {
-                return $"ID: {Id}, Time Received: {TimeReceived}, Time Fulfilled: Unfulfilled, Ice Cream List:\n{ic}";
+                return $"ID: {Id}\nTime Received: {TimeReceived}\nTime Fulfilled: Unfulfilled\n\nIce Cream List:\n\n{ic}";
             }
         }
     }

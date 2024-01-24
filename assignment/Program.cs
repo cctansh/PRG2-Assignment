@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 using System.IO;
+using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
 
 namespace assignment
@@ -26,78 +27,81 @@ namespace assignment
 
                 if (o == "1")
                 {
-                    Console.WriteLine("=================================");
+                    Console.WriteLine("==================");
                     Console.WriteLine("List all customers");
-                    Console.WriteLine("=================================");
+                    Console.WriteLine("==================");
+                    Console.WriteLine();
                     DisplayCustomers(customerList);
                 }
                 else if (o == "2")
                 {
-                    Console.WriteLine("=================================");
+                    Console.WriteLine("=======================");
                     Console.WriteLine("List all current orders");
-                    Console.WriteLine("=================================");
-                    DisplayOrderQueues(regularOrders, goldOrders);
+                    Console.WriteLine("=======================");
                     Console.WriteLine();
+                    DisplayOrderQueues(regularOrders, goldOrders);
                 }
                 else if (o == "3")
                 {
-                    Console.WriteLine("=================================");
+                    Console.WriteLine("=======================");
                     Console.WriteLine("Register a new customer");
-                    Console.WriteLine("=================================");
-                    RegisterNewCustomer();
+                    Console.WriteLine("=======================");
                     Console.WriteLine();
+                    RegisterNewCustomer();
                 }
                 else if (o == "4")
                 {
-                    Console.WriteLine("=================================");
+                    Console.WriteLine("=========================");
                     Console.WriteLine("Create a customer's order");
-                    Console.WriteLine("=================================");
+                    Console.WriteLine("=========================");
+                    Console.WriteLine();
                     // method goes here
                     MakeCOrder(customerList, orderList, regularOrders, goldOrders);
-                   
-                    Console.WriteLine();
                 }
                 else if (o == "5")
                 {
-                    Console.WriteLine("=================================");
+                    Console.WriteLine("===================================");
                     Console.WriteLine("Display order details of a customer");
-                    Console.WriteLine("=================================");
-                    DisplayCustomerOrder(customerList);
+                    Console.WriteLine("===================================");
                     Console.WriteLine();
+                    DisplayCustomerOrder(customerList);
                 }
                 else if (o == "6")
                 {
-                    Console.WriteLine("=================================");
+                    Console.WriteLine("====================");
                     Console.WriteLine("Modify order details");
-                    Console.WriteLine("=================================");
-                    ModifyCustomerOrder(customerList);
+                    Console.WriteLine("====================");
                     Console.WriteLine();
+                    ModifyCustomerOrder(customerList);
                 }
                 else if (o == "7")
                 {
-                    Console.WriteLine("=================================");
+                    Console.WriteLine("=============================");
                     Console.WriteLine("Process an order and checkout");
-                    Console.WriteLine("=================================");
+                    Console.WriteLine("=============================");
+                    Console.WriteLine();
                     Order order = Checkout(regularOrders, goldOrders, customerList);
                     orderList.Add(order);
-                    Console.WriteLine();
                 }
                 else if (o == "8")
                 {
-                    Console.WriteLine("=================================");
+                    Console.WriteLine("================================================================================");
                     Console.WriteLine("Display monthly charged amounts breakdown and total charged amounts for the year");
-                    Console.WriteLine("=================================");
+                    Console.WriteLine("================================================================================");
+                    Console.WriteLine();
                 }
                 else if (o == "0")
                 {
-                    Console.WriteLine("Goodbye!");
+                    Console.WriteLine("======================================");
+                    Console.WriteLine("Thank you for shopping at I.C. Treats!");
+                    Console.WriteLine("======================================");
                     break;
                 }
                 else
                 {
                     Console.WriteLine("Invalid option. Please choose one of the listed options (0 - 8).");
-                    Console.WriteLine();
                 }
+                Console.WriteLine();
             }
         }
         // add customers from csv
@@ -154,6 +158,7 @@ namespace assignment
             Console.WriteLine("[7] Process an order and checkout");
             Console.WriteLine("[8] Display monthly charged amounts breakdown and total charged amounts for the year");
             Console.WriteLine("[0] Exit");
+            Console.WriteLine();
             Console.Write("Enter your option: ");
 
         }
@@ -163,10 +168,13 @@ namespace assignment
         
         static void DisplayCustomers(List<Customer> cList)
         {
+            Console.WriteLine($"{"",-5} {"Name",-10}   {"ID",-6}   {"DoB",-10}   {"Tier"}");
+            Console.WriteLine("-------------------------------------------------");
+
             int i = 1;
             foreach (var c in cList)
             {
-                Console.WriteLine($"[{i}]\n{c.ToString()}\n");
+                Console.WriteLine($"{$"[{i}]",-5} {c.Name,-10}   {c.MemberId,-6}   {c.Dob.ToString("dd/MM/yyyy"),-10}   {c.Rewards.Tier}");
                 i++;
             }
         }
@@ -178,34 +186,47 @@ namespace assignment
             // display regular queue
             if (regularOrders.Count > 0)
             {
-                Console.WriteLine("Current orders in regular queue:");
+                Console.WriteLine("-------------------------------");
+                Console.WriteLine("Current orders in regular queue");
+                Console.WriteLine("-------------------------------");
                 int i = 1;
                 foreach (var order in regularOrders)
                 {
-                    Console.WriteLine($"Order {i}: " + order.ToString());
+                    Console.WriteLine();
+                    Console.Write($"Order {i}:\n" + order.ToString());
+                    Console.WriteLine("---------------------------------");
                     i++;
                 }
-                Console.WriteLine();
             }
             else
             {
+                Console.WriteLine("---------------------------");
                 Console.WriteLine("No orders in regular queue.");
+                Console.WriteLine("---------------------------");
             }
+
+            Console.WriteLine();
 
             // display gold queue
             if (goldOrders.Count > 0)
             {
-                Console.WriteLine("Current orders in gold members queue:");
+                Console.WriteLine("------------------------------------");
+                Console.WriteLine("Current orders in gold members queue");
+                Console.WriteLine("------------------------------------");
                 int i = 1;
                 foreach (var order in goldOrders)
                 {
-                    Console.WriteLine($"Order {i}: " + order.ToString());
+                    Console.WriteLine();
+                    Console.Write($"Order {i}:\n" + order.ToString());
+                    Console.WriteLine("---------------------------------");
                     i++;
                 }
             }
             else
             {
+                Console.WriteLine("--------------------------------");
                 Console.WriteLine("No orders in gold members queue.");
+                Console.WriteLine("--------------------------------");
             }
         }
 
@@ -257,224 +278,184 @@ namespace assignment
         //for testing
         static void MakeCOrder(List<Customer> customerList, List<Order> orderList, Queue<Order> regQ, Queue<Order> goldQ)
         {
-            DisplayCustomers(customerList);
+            int cIndex = SelectCustomer(customerList);
 
-            while (true)
+            Customer selectedC = customerList[cIndex - 1];
+
+            Console.WriteLine();
+
+            Console.WriteLine("Making Order");
+            Order newO = selectedC.MakeOrder();
+
+            newO.Id = orderList.Count + 1;
+            customerList[cIndex - 1].CurrentOrder = newO;
+            orderList.Add(newO);
+            if (selectedC.Rewards.Tier == "Gold")
             {
-                try
-                {
-                    // user selects customer
-                    Console.Write("Select a customer: ");
-                    int cIndex = int.Parse(Console.ReadLine());
-                    Customer selectedC = customerList[cIndex - 1];
-
-                    Console.WriteLine();
-
-                    Console.WriteLine("Making Order");
-                    Order newO = selectedC.MakeOrder();
-
-                    newO.Id = orderList.Count + 1;
-                    customerList[cIndex - 1].CurrentOrder = newO;
-                    orderList.Add(newO);
-                    if (selectedC.Rewards.Tier == "Golf")
-                    {
-                        goldQ.Enqueue(newO);
-                    }
-                    else
-                    {
-                        regQ.Enqueue(newO);
-                    }
-
-                    // all code executed successfully, end method
-                    return;
-                }
-                // if user entered non-int value
-                catch (FormatException)
-                {
-                    Console.WriteLine("Invalid option. Please enter an integer value.");
-                }
-                // if user selected a number outside customer list range
-                catch (ArgumentOutOfRangeException)
-                {
-                    Console.WriteLine($"Invalid option. Please enter a number from 1 to {customerList.Count}");
-                }
+                goldQ.Enqueue(newO);
             }
+            else
+            {
+                regQ.Enqueue(newO);
+            }
+
+            // all code executed successfully, end method
+            return;
         }
 
 
         // Q5: Display order details of a customer
         static void DisplayCustomerOrder(List<Customer> customerList)
         {
-            DisplayCustomers(customerList);
+            int cIndex = SelectCustomer(customerList);
+            
+            Customer selectedC = customerList[cIndex - 1];
 
-            while (true)
+            Console.WriteLine();
+
+            // display customer current order
+            if (selectedC.CurrentOrder != null)
             {
-                try
-                {
-                    // user selects customer
-                    Console.Write("Select a customer: ");
-                    int cIndex = int.Parse(Console.ReadLine());
-                    Customer selectedC = customerList[cIndex - 1];
+                Console.WriteLine("-------------");
+                Console.WriteLine("Current Order");
+                Console.WriteLine("-------------");
+                Console.WriteLine();
+                Console.Write(selectedC.CurrentOrder.ToString());
+                Console.WriteLine("---------------------------------");
+            }
+            else
+            {
+                Console.WriteLine("-----------------"); 
+                Console.WriteLine("No current order.");
+                Console.WriteLine("-----------------");
+            }
 
+            Console.WriteLine();
+
+            // display customer past orders
+            if (selectedC.OrderHistory.Count > 0)
+            {
+                Console.WriteLine("------------");
+                Console.WriteLine("Past Orders:");
+                Console.WriteLine("------------");
+                int i = 1;
+                foreach (Order order in selectedC.OrderHistory)
+                {
                     Console.WriteLine();
-
-                    // display customer current order
-                    if (selectedC.CurrentOrder != null)
-                    {
-                        Console.WriteLine("Current Order: ");
-                        Console.WriteLine(selectedC.CurrentOrder.ToString());
-                    }
-                    else
-                    {
-                        Console.WriteLine("No current order.");
-                    }
-
-                    Console.WriteLine();
-
-                    // display customer past orders
-                    if (selectedC.OrderHistory.Count > 0)
-                    {
-                        Console.WriteLine("Past Orders: ");
-                        int i = 1;
-                        foreach (Order order in selectedC.OrderHistory)
-                        {
-                            Console.WriteLine($"Order {i}: " + order.ToString());
-                            i++;
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("No past orders.");
-                    }
-
-                    // all code executed successfully, end method
-                    return;
-                }
-                // if user entered non-int value
-                catch (FormatException)
-                {
-                    Console.WriteLine("Invalid option. Please enter an integer value.");
-                }
-                // if user selected a number outside customer list range
-                catch (ArgumentOutOfRangeException)
-                {
-                    Console.WriteLine($"Invalid option. Please enter a number from 1 to {customerList.Count}");
+                    Console.WriteLine($"Order {i}: " + order.ToString());
+                    Console.WriteLine("---------------------------------");
+                    i++;
                 }
             }
+            else
+            {
+                Console.WriteLine("---------------");
+                Console.WriteLine("No past orders.");
+                Console.WriteLine("---------------");
+            }
+
+            // all code executed successfully, end method
+            return;
         }
 
         // Q6: Modify order details
         static void ModifyCustomerOrder(List<Customer> customerList)
         {
-            DisplayCustomers(customerList);
-            while (true)
+            int cIndex = SelectCustomer(customerList);
+
+            Customer selectedC = customerList[cIndex - 1];
+
+            Console.WriteLine();
+
+            // checking if there is current order
+            // if no, print message and go to return
+            if (selectedC.CurrentOrder == null)
             {
-                try
+                Console.WriteLine("-------------------------------------------------------");
+                Console.WriteLine("No current order. Make an order using [4] Create Order.");
+                Console.WriteLine("-------------------------------------------------------");
+            }
+            // if yes, execute this code
+            else
+            {
+                Order cOrder = selectedC.CurrentOrder;
+
+                string option = DisplayModifyOrderMenu(cOrder);
+
+                Console.WriteLine();
+
+                if (option == "1")
                 {
-                    // user selects customer
-                    Console.Write("Select a customer: ");
-                    int cIndex = int.Parse(Console.ReadLine());
-                    Customer selectedC = customerList[cIndex - 1];
+                    // select ice cream
+                    int icIndex = ChooseIceCream(cOrder.IceCreamList);
+                    Console.WriteLine();
+
+                    // modify selected ice cream
+                    cOrder.ModifyIceCream(icIndex);
+                }
+                else if (option == "2")
+                {
+                    IceCream newIC = CreateIceCream();
 
                     Console.WriteLine();
 
-                    // checking if there is current order
-                    // if no, print message and go to return
-                    if (selectedC.CurrentOrder == null)
+                    cOrder.AddIceCream(newIC);
+                    Console.WriteLine("Ice cream added.");
+                }
+                // if option == 3 (already data validated in method)
+                else
+                {
+                    if (cOrder.IceCreamList.Count == 1)
                     {
-                        Console.WriteLine("No current order. Make an order using [4] Create Order.");
+                        Console.WriteLine("You cannot have 0 ice creams in the order!");
                     }
-                    // if yes, execute this code
                     else
                     {
-                        Order cOrder = selectedC.CurrentOrder;
-
-                        string option = DisplayModifyOrderMenu(cOrder);
-
-                        Console.WriteLine();
-
-                        if (option == "1")
-                        {
-                            // select ice cream
-                            int icIndex = ChooseIceCream(cOrder.IceCreamList);
-                            Console.WriteLine();
-
-                            // modify selected ice cream
-                            cOrder.ModifyIceCream(icIndex);
-                        }
-                        else if (option == "2")
-                        {
-                            IceCream newIC = CreateIceCream();
-
-                            Console.WriteLine();
-
-                            cOrder.AddIceCream(newIC);
-                            Console.WriteLine("Ice cream added.");
-                        }
-                        // if option == 3 (already data validated in method)
-                        else
-                        {
-                            if (cOrder.IceCreamList.Count == 1)
-                            {
-                                Console.WriteLine("You cannot have 0 ice creams in the order!");
-                            }
-                            else
-                            {
-                                int icIndex = ChooseIceCream(cOrder.IceCreamList);
-                                cOrder.DeleteIceCream(icIndex);
-                                Console.WriteLine("Ice cream deleted.");
-                            }
-                        }
-
-                        Console.WriteLine();
-
-                        // update customer order and display
-                        selectedC.CurrentOrder = cOrder;
-                        customerList[cIndex - 1] = selectedC;
-                        Console.WriteLine("Modified Order: " + cOrder.ToString());
+                        int icIndex = ChooseIceCream(cOrder.IceCreamList);
+                        cOrder.DeleteIceCream(icIndex);
+                        Console.WriteLine("Ice cream deleted.");
                     }
+                }
 
-                    Console.WriteLine();
+                Console.WriteLine();
 
-                    // all code executed successfully, end method
-                    Console.WriteLine("Returning to main menu...");
-                    return;
-                }
-                // if user entered non-int value for customer list
-                catch (FormatException)
-                {
-                    Console.WriteLine("Invalid option. Please enter an integer value.");
-                }
-                // if user selected a number not within customer list range
-                catch (ArgumentOutOfRangeException)
-                {
-                    Console.WriteLine($"Invalid option. Please enter a number from 1 to {customerList.Count}.");
-                }
+                // update customer order and display
+                selectedC.CurrentOrder = cOrder;
+                customerList[cIndex - 1] = selectedC;
+                Console.WriteLine("Modified Order: " + cOrder.ToString());
             }
+            return;
         }
 
         static string DisplayModifyOrderMenu(Order cOrder)
         {
             // display ice creams
-            Console.WriteLine("Ice creams in current order:");
-            int i = 1;
-            foreach (IceCream ic in cOrder.IceCreamList)
+            Console.WriteLine("---------------------------");
+            Console.WriteLine("Ice creams in current order");
+            Console.WriteLine("---------------------------");
+            Console.WriteLine();
+            for (int i = 1; i <= cOrder.IceCreamList.Count; i++)
             {
-                Console.WriteLine($"[{i}]: " + ic.ToString());
-                i++;
+                Console.WriteLine($"Ice Cream [{i}]:\n{cOrder.IceCreamList[i - 1]}\n");
             }
 
             Console.WriteLine();
 
             // display modify menu
+            Console.WriteLine("-----------------------------");
+            Console.WriteLine("Modifications");
+            Console.WriteLine("-----------------------------");
             Console.WriteLine("[1] Modify Existing Ice Cream");
             Console.WriteLine("[2] Add Ice Cream");
             Console.WriteLine("[3] Delete Ice Cream");
+            Console.WriteLine();
 
             while (true)
             {
                 Console.Write("What would you like to do?: ");
                 string option = Console.ReadLine();
+                Console.WriteLine();
+
                 // checks if valid option, repeating if not
                 if (option == "1" || option == "2" || option == "3")
                 {
@@ -483,6 +464,7 @@ namespace assignment
                 else
                 {
                     Console.WriteLine("Invalid option. Please enter 1, 2, or 3.");
+                    Console.WriteLine();
                 }
             }
         }
@@ -966,9 +948,32 @@ namespace assignment
             return order;
         }
 
-        void SelectCustomer()
+        static int SelectCustomer(List<Customer> customerList)
         {
-            // move selection of customers here?
+            DisplayCustomers(customerList);
+            Console.WriteLine();
+
+            while (true)
+            {
+                try
+                {
+                    // user selects customer
+                    Console.Write("Select a customer: ");
+                    int cIndex = int.Parse(Console.ReadLine());
+
+                    if (cIndex > 0 && cIndex <= customerList.Count)
+                    {
+                        return cIndex;
+                    }
+
+                    Console.WriteLine($"\nInvalid option. Please enter a number from 1 to {customerList.Count}\n");
+                }
+                // if user entered non-int value
+                catch (FormatException)
+                {
+                    Console.WriteLine("\nInvalid option. Please enter an integer value.\n");
+                }
+            }
         }
     }
 }

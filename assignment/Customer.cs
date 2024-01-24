@@ -57,7 +57,7 @@ namespace assignment
 
             while (true)
             {
-                Console.WriteLine("Add an ice cream: ");
+                Console.WriteLine("Adding ice cream...");
                 IceCream ic = Program.CreateIceCream();
                 cOrder.AddIceCream(ic);
                 while (true)
@@ -99,7 +99,7 @@ namespace assignment
             {
                 h += o.ToString();
             }
-            return $"Name: {Name}, Member ID: {MemberId}, DoB: {Dob}, Tier: {Rewards.Tier}";
+            return $"Name: {Name}\nMember ID: {MemberId}\nDoB: {Dob.ToString("dd/MM/yyyy")}\nTier: {Rewards.Tier}";
         }
     }
 }

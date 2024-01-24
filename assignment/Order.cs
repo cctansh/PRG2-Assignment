@@ -49,7 +49,7 @@ namespace assignment
                 Console.WriteLine("[3] Flavours");
                 Console.WriteLine("[4] Toppings");
                 Console.WriteLine("[0] Exit");
-                Console.Write("What would you like to modify?");
+                Console.Write("What would you like to modify?: ");
                 string option = Console.ReadLine();
                 Console.WriteLine();
 

@@ -16,10 +16,92 @@ namespace assignment
             Queue<Order> goldOrders = new Queue<Order>();
             List<Order> orderList = new List<Order>();
 
-            
+            InitialiseCustomers(customerList);
+
+            while (true)
+            {
+                DisplayMenu();
+                string o = Console.ReadLine();
+                Console.WriteLine();
+
+                if (o == "1")
+                {
+                    Console.WriteLine("=================================");
+                    Console.WriteLine("List all customers");
+                    Console.WriteLine("=================================");
+                    DisplayCustomers(customerList);
+                }
+                else if (o == "2")
+                {
+                    Console.WriteLine("=================================");
+                    Console.WriteLine("List all current orders");
+                    Console.WriteLine("=================================");
+                    DisplayOrderQueues(regularOrders, goldOrders);
+                    Console.WriteLine();
+                }
+                else if (o == "3")
+                {
+                    Console.WriteLine("=================================");
+                    Console.WriteLine("Register a new customer");
+                    Console.WriteLine("=================================");
+                    RegisterNewCustomer();
+                    Console.WriteLine();
+                }
+                else if (o == "4")
+                {
+                    Console.WriteLine("=================================");
+                    Console.WriteLine("Create a customer's order");
+                    Console.WriteLine("=================================");
+                    // method goes here
+                    MakeCOrder(customerList, orderList, regularOrders, goldOrders);
+                   
+                    Console.WriteLine();
+                }
+                else if (o == "5")
+                {
+                    Console.WriteLine("=================================");
+                    Console.WriteLine("Display order details of a customer");
+                    Console.WriteLine("=================================");
+                    DisplayCustomerOrder(customerList);
+                    Console.WriteLine();
+                }
+                else if (o == "6")
+                {
+                    Console.WriteLine("=================================");
+                    Console.WriteLine("Modify order details");
+                    Console.WriteLine("=================================");
+                    ModifyCustomerOrder(customerList);
+                    Console.WriteLine();
+                }
+                else if (o == "7")
+                {
+                    Console.WriteLine("=================================");
+                    Console.WriteLine("Process an order and checkout");
+                    Console.WriteLine("=================================");
+                    Order order = Checkout(regularOrders, goldOrders, customerList);
+                    orderList.Add(order);
+                    Console.WriteLine();
+                }
+                else if (o == "8")
+                {
+                    Console.WriteLine("=================================");
+                    Console.WriteLine("Display monthly charged amounts breakdown and total charged amounts for the year");
+                    Console.WriteLine("=================================");
+                }
+                else if (o == "0")
+                {
+                    Console.WriteLine("Goodbye!");
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid option. Please choose one of the listed options (0 - 8).");
+                    Console.WriteLine();
+                }
+            }
         }
         // add customers from csv
-        void InitialiseCustomers(List<Customer> cList)
+        static void InitialiseCustomers(List<Customer> cList)
         {
             // Specify the path to the CSV file
             string csvFilePath = "customers.csv";
@@ -37,13 +119,18 @@ namespace assignment
                     // Assuming the structure: Name, MemberId, DOB, MembershipStatus, MembershipPoints, PunchCard
                     string name = fields[0];
                     int memberId = int.Parse(fields[1]);
-                    DateTime dob = DateTime.Parse(fields[2]);
+                    DateTime dob = DateTime.ParseExact(fields[2], "dd/MM/yyyy", null);
                     string membershipStatus = fields[3];
                     int membershipPoints = int.Parse(fields[4]);
                     int punchCard = int.Parse(fields[5]);
 
                     // Add the customer information to the list
-                        cList.Add(new Customer(name,memberId,dob));
+                    Customer c = new Customer(name, memberId, dob);
+                    c.Rewards.Tier = membershipStatus;
+                    c.Rewards.Points = membershipPoints;
+                    c.Rewards.PunchCard = punchCard;
+                    cList.Add(c);
+
                 }
             }
         }
@@ -53,8 +140,9 @@ namespace assignment
 
 
         // print main option menu
-        void DisplayMenu()
+        static void DisplayMenu()
         {
+            Console.WriteLine("=================================");
             Console.WriteLine("I.C. Treats");
             Console.WriteLine("=================================");
             Console.WriteLine("[1] List all customers");
@@ -72,20 +160,20 @@ namespace assignment
 
 
         // Q1: List all customers
-         void DisplayCustomers(List<Customer> cList)
+        
+        static void DisplayCustomers(List<Customer> cList)
         {
             int i = 1;
             foreach (var c in cList)
             {
-                Console.WriteLine($"[{i}] " + c.ToString());
+                Console.WriteLine($"[{i}]\n{c.ToString()}\n");
                 i++;
             }
-
         }
 
 
         // Q2: List all current orders
-        void DisplayOrderQueues(Queue<Order> regularOrders, Queue<Order> goldOrders)
+        static void DisplayOrderQueues(Queue<Order> regularOrders, Queue<Order> goldOrders)
         {
             // display regular queue
             if (regularOrders.Count > 0)
@@ -166,11 +254,56 @@ namespace assignment
         }
 
         // Q4:
+        //for testing
+        static void MakeCOrder(List<Customer> customerList, List<Order> orderList, Queue<Order> regQ, Queue<Order> goldQ)
+        {
+            DisplayCustomers(customerList);
 
+            while (true)
+            {
+                try
+                {
+                    // user selects customer
+                    Console.Write("Select a customer: ");
+                    int cIndex = int.Parse(Console.ReadLine());
+                    Customer selectedC = customerList[cIndex - 1];
+
+                    Console.WriteLine();
+
+                    Console.WriteLine("Making Order");
+                    Order newO = selectedC.MakeOrder();
+
+                    newO.Id = orderList.Count + 1;
+                    customerList[cIndex - 1].CurrentOrder = newO;
+                    orderList.Add(newO);
+                    if (selectedC.Rewards.Tier == "Golf")
+                    {
+                        goldQ.Enqueue(newO);
+                    }
+                    else
+                    {
+                        regQ.Enqueue(newO);
+                    }
+
+                    // all code executed successfully, end method
+                    return;
+                }
+                // if user entered non-int value
+                catch (FormatException)
+                {
+                    Console.WriteLine("Invalid option. Please enter an integer value.");
+                }
+                // if user selected a number outside customer list range
+                catch (ArgumentOutOfRangeException)
+                {
+                    Console.WriteLine($"Invalid option. Please enter a number from 1 to {customerList.Count}");
+                }
+            }
+        }
 
 
         // Q5: Display order details of a customer
-        void DisplayCustomerOrder(List<Customer> customerList)
+        static void DisplayCustomerOrder(List<Customer> customerList)
         {
             DisplayCustomers(customerList);
 
@@ -231,7 +364,7 @@ namespace assignment
         }
 
         // Q6: Modify order details
-        void ModifyCustomerOrder(List<Customer> customerList)
+        static void ModifyCustomerOrder(List<Customer> customerList)
         {
             DisplayCustomers(customerList);
             while (true)
@@ -281,15 +414,23 @@ namespace assignment
                         // if option == 3 (already data validated in method)
                         else
                         {
-                            int icIndex = ChooseIceCream(cOrder.IceCreamList);
-                            cOrder.DeleteIceCream(icIndex);
-                            Console.WriteLine("Ice cream deleted.");
+                            if (cOrder.IceCreamList.Count == 1)
+                            {
+                                Console.WriteLine("You cannot have 0 ice creams in the order!");
+                            }
+                            else
+                            {
+                                int icIndex = ChooseIceCream(cOrder.IceCreamList);
+                                cOrder.DeleteIceCream(icIndex);
+                                Console.WriteLine("Ice cream deleted.");
+                            }
                         }
 
                         Console.WriteLine();
 
                         // update customer order and display
                         selectedC.CurrentOrder = cOrder;
+                        customerList[cIndex - 1] = selectedC;
                         Console.WriteLine("Modified Order: " + cOrder.ToString());
                     }
 
@@ -307,12 +448,12 @@ namespace assignment
                 // if user selected a number not within customer list range
                 catch (ArgumentOutOfRangeException)
                 {
-                    Console.WriteLine($"Invalid option. Please enter a number from 1 to {customerList.Count}");
+                    Console.WriteLine($"Invalid option. Please enter a number from 1 to {customerList.Count}.");
                 }
             }
         }
 
-        string DisplayModifyOrderMenu(Order cOrder)
+        static string DisplayModifyOrderMenu(Order cOrder)
         {
             // display ice creams
             Console.WriteLine("Ice creams in current order:");
@@ -346,7 +487,7 @@ namespace assignment
             }
         }
 
-        int ChooseIceCream(List<IceCream> icList)
+        static int ChooseIceCream(List<IceCream> icList)
         {
             while (true)
             {
@@ -354,9 +495,9 @@ namespace assignment
                 {
                     Console.Write("Please choose your ice cream: ");
                     int option = int.Parse(Console.ReadLine());
-                    if (option <= 0 || option >= icList.Count)
+                    if (option <= 0 || option > icList.Count)
                     {
-                        Console.WriteLine($"Invalid option. Please enter a number from 1 to {icList.Count}");
+                        Console.WriteLine($"Invalid option. Please enter a number from 1 to {icList.Count}.");
                     }
                     else
                     {
@@ -657,7 +798,7 @@ namespace assignment
 
         // advanced (a)
         // to associate order with member, check and match the order id (unique among all orders!!)
-        void Checkout(Queue<Order> regQ, Queue<Order> goldQ, List<Customer> cList)
+        static Order Checkout(Queue<Order> regQ, Queue<Order> goldQ, List<Customer> cList)
         {
             Order order = new Order();
             Customer customer = new Customer();
@@ -822,6 +963,12 @@ namespace assignment
             customer.OrderHistory.Add(order);
 
             cList[cIndex] = customer;
+            return order;
+        }
+
+        void SelectCustomer()
+        {
+            // move selection of customers here?
         }
     }
 }

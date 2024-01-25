@@ -43,7 +43,10 @@ namespace assignment
             string f = "";
             foreach (var item in Flavours)
             {
-                f += item.Type + " ";
+                for (int i = 0; i < item.Quantity; i++)
+                {
+                    f += item.Type + " ";
+                }
             }
             f = f.Remove(f.Length - 1);
             string t = "";
@@ -54,11 +57,11 @@ namespace assignment
                     t += item.Type + " ";
                 }
                 t = t.Remove(t.Length - 1);
-                return $"Option: {Option}, Scoops: {Scoops}, Flavours: {f}, Toppings: {t}";
+                return $"Option: {Option}\nScoops: {Scoops}\nFlavours: {f}\nToppings: {t}";
             }
             else
             {
-                return $"Option: {Option}, Scoops: {Scoops}, Flavours: {f}, Toppings: None";
+                return $"Option: {Option}\nScoops: {Scoops}\nFlavours: {f}\nToppings: None";
             }
         }
     }

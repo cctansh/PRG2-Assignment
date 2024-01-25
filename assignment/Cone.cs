@@ -61,7 +61,7 @@ namespace assignment
 
         public override string ToString()
         {
-            return base.ToString() + $", Dipped?: {Dipped}";
+            return base.ToString() + $"\nDipped?: {Dipped}";
         }
     }
 }

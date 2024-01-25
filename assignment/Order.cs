@@ -44,11 +44,15 @@ namespace assignment
 
             while (true)
             {
+                Console.WriteLine("-------------------");
+                Console.WriteLine("Modifying Ice Cream");
+                Console.WriteLine("-------------------");
                 Console.WriteLine("[1] Option");
                 Console.WriteLine("[2] Scoops");
                 Console.WriteLine("[3] Flavours");
                 Console.WriteLine("[4] Toppings");
                 Console.WriteLine("[0] Exit");
+                Console.WriteLine();
                 Console.Write("What would you like to modify?: ");
                 string option = Console.ReadLine();
                 Console.WriteLine();
@@ -56,11 +60,17 @@ namespace assignment
                 if (option == "1")
                 {
                     currentIC = ChangeOption(currentIC);
+                    Console.WriteLine();
                 }
                 else if (option == "2")
                 {
                     int s = Program.ChooseScoops();
                     currentIC.Scoops = s;
+
+                    Console.WriteLine("Now selecting flavours to correspond to your new number of scoops...\n");
+
+                    List<Flavour> flavours = Program.ChooseFlavours(currentIC.Scoops);
+                    currentIC.Flavours = flavours;
                 }
                 else if (option == "3")
                 {
@@ -74,22 +84,32 @@ namespace assignment
                 }
                 else if (option == "0")
                 {
+                    Console.WriteLine("------------------------");
                     Console.WriteLine("Modifications finalised.");
+                    Console.WriteLine("------------------------");
                     return;
                 }
                 else
                 {
                     Console.WriteLine("Invalid option. Please enter 1, 2, 3, 4, or 0.");
+                    Console.WriteLine();
                     continue;
                 }
                 iceCreamList[c - 1] = currentIC;
-                Console.WriteLine("Modified Ice Cream: " + currentIC.ToString());
+                Console.WriteLine("------------------");
+                Console.WriteLine("Modified Ice Cream");
+                Console.WriteLine("------------------");
+                Console.WriteLine(currentIC.ToString());
                 Console.WriteLine();
             }
             
             IceCream ChangeOption(IceCream cIC)
             {
-                Console.WriteLine("Options:\n[1] Cup\n[2] Cone\n[3] Waffle\n[0] Back");
+                Console.WriteLine("-----------------");
+                Console.WriteLine("Ice Cream Options");
+                Console.WriteLine("-----------------");
+                Console.WriteLine("[1] Cup\n[2] Cone\n[3] Waffle");
+                Console.WriteLine();
                 while (true)
                 {
                     Console.Write("Please choose your ice cream option: ");
@@ -98,7 +118,7 @@ namespace assignment
                     {
                         if (cIC is Cup)
                         {
-                            Console.WriteLine("Your ice cream is already in a cup!");
+                            Console.WriteLine("\nYour ice cream is already in a cup!");
                             return cIC;
                         }
                         else
@@ -108,9 +128,11 @@ namespace assignment
                     }
                     else if (o == "2")
                     {
+                        Console.WriteLine();
                         if (cIC is Cone)
                         {
                             Console.WriteLine("Your ice cream is already in a cone.");
+                            Console.WriteLine();
                         }
 
                         while (true)
@@ -127,17 +149,23 @@ namespace assignment
                             }
                             else
                             {
-                                Console.WriteLine("Invalid option. Please enter Y or N.");
+                                Console.WriteLine("\nInvalid option. Please enter Y or N.\n");
                             }
                         }
                     }
                     else if (o == "3")
                     {
+                        Console.WriteLine();
                         if (cIC is Waffle)
                         {
                             Console.WriteLine("Your ice cream is already in a waffle.");
+                            Console.WriteLine();
                         }
-                        Console.WriteLine("Waffle Flavours:\n[1] Original\n[2] Red Velvet\n[3] Charcoal\n[4] Pandan");
+                        Console.WriteLine("---------------");
+                        Console.WriteLine("Waffle Flavours");
+                        Console.WriteLine("---------------");
+                        Console.WriteLine("[1] Original\n[2] Red Velvet\n[3] Charcoal\n[4] Pandan");
+                        Console.WriteLine();
                         
                         while (true)
                         {
@@ -161,13 +189,14 @@ namespace assignment
                             }
                             else
                             {
-                                Console.WriteLine("Invalid option. Please enter 1, 2, 3, or 4.");
+                                Console.WriteLine("\nInvalid option. Please enter 1, 2, 3, or 4.\n");
                             }
                         }
                     }
                     else
                     {
-                        Console.WriteLine("Invalid option. Please enter 1, 2, 3, or 0.");
+                        Console.WriteLine("Invalid option. Please enter 1, 2, or 3.");
+                        Console.WriteLine();
                     }
                 }
             }
@@ -200,17 +229,18 @@ namespace assignment
         public override string ToString()
         {
             string ic = "";
-            foreach (var item in IceCreamList)
+            for (int i = 1; i <= IceCreamList.Count; i++)
             {
-                ic += item.ToString() + "\n";
+                ic += $"Ice Cream [{i}]:\n{IceCreamList[i-1]}\n\n";
             }
+
             if (TimeFulfilled != null)
             {
-                return $"ID: {Id}, Time Received: {TimeReceived}, Time Fulfilled: {TimeFulfilled}, Ice Cream List:\n{ic}";
+                return $"ID: {Id}\nTime Received: {TimeReceived}\nTime Fulfilled: {TimeFulfilled}\n\nIce Cream List:\n\n{ic}";
             }
             else
             {
-                return $"ID: {Id}, Time Received: {TimeReceived}, Time Fulfilled: Unfulfilled, Ice Cream List:\n{ic}";
+                return $"ID: {Id}\nTime Received: {TimeReceived}\nTime Fulfilled: Unfulfilled\n\nIce Cream List:\n\n{ic}";
             }
         }
     }

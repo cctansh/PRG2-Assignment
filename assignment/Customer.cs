@@ -57,20 +57,24 @@ namespace assignment
 
             while (true)
             {
-                Console.WriteLine("Adding ice cream...");
+                Console.WriteLine("----------------");
+                Console.WriteLine("Adding ice cream");
+                Console.WriteLine("----------------");
+                Console.WriteLine();
                 IceCream ic = Program.CreateIceCream();
                 cOrder.AddIceCream(ic);
                 while (true)
                 {
                     Console.Write("Would you like to add another ice cream to your order? (Y/N): ");
                     o = Console.ReadLine();
+                    Console.WriteLine();
                     if (o.ToUpper() == "Y" || o.ToUpper() == "N")
                     {
                         break;
                     }
                     else
                     {
-                        Console.WriteLine("Invalid option. Please enter Y or N.");
+                        Console.WriteLine("Invalid option. Please enter Y or N.\n");
                     }
                 }
                 if (o.ToUpper() == "N")
@@ -78,7 +82,6 @@ namespace assignment
                     Console.WriteLine("Order created.");
                     return cOrder;
                 }
-                Console.WriteLine();
             }
         }
         public bool IsBirthday()

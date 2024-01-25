@@ -1,5 +1,6 @@
 ﻿using assignment;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 using System.IO;
@@ -253,7 +254,16 @@ namespace assignment
             }
         }
 
-        // Q4:
+        // Q4: Create a customer's order
+        /*static void CreateCustomerOrder()
+        {
+            Console.WriteLine("List of customers:");
+            DisplayCustomers(...);
+
+            Console.Write("Enter the MemberId of the customer: ");
+            int memberId = int.Parse(Console.ReadLine());*/
+
+
         //for testing
         static void MakeCOrder(List<Customer> customerList, List<Order> orderList, Queue<Order> regQ, Queue<Order> goldQ)
         {

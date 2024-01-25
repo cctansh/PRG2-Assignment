@@ -30,7 +30,7 @@ namespace assignment
             // Additional cost for each topping
             double toppingsPrice = Toppings.Count * 1.0;
 
-            double totalPrice = basePrice + scoopPrice + premiumFlavorPrice + toppingsPrice;
+            double totalPrice = scoopPrice + premiumFlavorPrice + toppingsPrice;
 
             return totalPrice;
         }

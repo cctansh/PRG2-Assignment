@@ -80,8 +80,7 @@ namespace assignment
                     Console.WriteLine("Process an order and checkout");
                     Console.WriteLine("=============================");
                     Console.WriteLine();
-                    Order order = Checkout(regularOrders, goldOrders, customerList);
-                    orderList.Add(order);
+                    Checkout(regularOrders, goldOrders, customerList);
                 }
                 else if (o == "8")
                 {
@@ -194,7 +193,7 @@ namespace assignment
                 {
                     Console.WriteLine();
                     Console.Write($"Order {i}:\n" + order.ToString());
-                    Console.WriteLine("---------------------------------");
+                    Console.WriteLine("---");
                     i++;
                 }
             }
@@ -218,7 +217,7 @@ namespace assignment
                 {
                     Console.WriteLine();
                     Console.Write($"Order {i}:\n" + order.ToString());
-                    Console.WriteLine("---------------------------------");
+                    Console.WriteLine("---");
                     i++;
                 }
             }
@@ -284,7 +283,10 @@ namespace assignment
 
             Console.WriteLine();
 
+            Console.WriteLine("------------");
             Console.WriteLine("Making Order");
+            Console.WriteLine("------------");
+            Console.WriteLine();
             Order newO = selectedC.MakeOrder();
 
             newO.Id = orderList.Count + 1;
@@ -321,7 +323,7 @@ namespace assignment
                 Console.WriteLine("-------------");
                 Console.WriteLine();
                 Console.Write(selectedC.CurrentOrder.ToString());
-                Console.WriteLine("---------------------------------");
+                Console.WriteLine("---");
             }
             else
             {
@@ -342,8 +344,8 @@ namespace assignment
                 foreach (Order order in selectedC.OrderHistory)
                 {
                     Console.WriteLine();
-                    Console.WriteLine($"Order {i}: " + order.ToString());
-                    Console.WriteLine("---------------------------------");
+                    Console.Write($"Order [{i}]\n\n" + order.ToString());
+                    Console.WriteLine("---");
                     i++;
                 }
             }
@@ -382,13 +384,10 @@ namespace assignment
 
                 string option = DisplayModifyOrderMenu(cOrder);
 
-                Console.WriteLine();
-
                 if (option == "1")
                 {
                     // select ice cream
                     int icIndex = ChooseIceCream(cOrder.IceCreamList);
-                    Console.WriteLine();
 
                     // modify selected ice cream
                     cOrder.ModifyIceCream(icIndex);
@@ -396,11 +395,10 @@ namespace assignment
                 else if (option == "2")
                 {
                     IceCream newIC = CreateIceCream();
-
-                    Console.WriteLine();
-
                     cOrder.AddIceCream(newIC);
+                    Console.WriteLine("----------------");
                     Console.WriteLine("Ice cream added.");
+                    Console.WriteLine("----------------");
                 }
                 // if option == 3 (already data validated in method)
                 else
@@ -413,7 +411,9 @@ namespace assignment
                     {
                         int icIndex = ChooseIceCream(cOrder.IceCreamList);
                         cOrder.DeleteIceCream(icIndex);
+                        Console.WriteLine("------------------");
                         Console.WriteLine("Ice cream deleted.");
+                        Console.WriteLine("------------------");
                     }
                 }
 
@@ -422,7 +422,10 @@ namespace assignment
                 // update customer order and display
                 selectedC.CurrentOrder = cOrder;
                 customerList[cIndex - 1] = selectedC;
-                Console.WriteLine("Modified Order: " + cOrder.ToString());
+                Console.WriteLine("--------------");
+                Console.WriteLine("Modified Order");
+                Console.WriteLine("--------------");
+                Console.Write(cOrder.ToString());
             }
             return;
         }
@@ -433,18 +436,17 @@ namespace assignment
             Console.WriteLine("---------------------------");
             Console.WriteLine("Ice creams in current order");
             Console.WriteLine("---------------------------");
-            Console.WriteLine();
             for (int i = 1; i <= cOrder.IceCreamList.Count; i++)
             {
+                Console.WriteLine(); 
                 Console.WriteLine($"Ice Cream [{i}]:\n{cOrder.IceCreamList[i - 1]}\n");
+                Console.WriteLine("---");
             }
 
-            Console.WriteLine();
-
             // display modify menu
-            Console.WriteLine("-----------------------------");
-            Console.WriteLine("Modifications");
-            Console.WriteLine("-----------------------------");
+            Console.WriteLine("-------------------");
+            Console.WriteLine("Order Modifications");
+            Console.WriteLine("-------------------");
             Console.WriteLine("[1] Modify Existing Ice Cream");
             Console.WriteLine("[2] Add Ice Cream");
             Console.WriteLine("[3] Delete Ice Cream");
@@ -477,9 +479,11 @@ namespace assignment
                 {
                     Console.Write("Please choose your ice cream: ");
                     int option = int.Parse(Console.ReadLine());
+                    Console.WriteLine();
                     if (option <= 0 || option > icList.Count)
                     {
                         Console.WriteLine($"Invalid option. Please enter a number from 1 to {icList.Count}.");
+                        Console.WriteLine();
                     }
                     else
                     {
@@ -488,25 +492,28 @@ namespace assignment
                 }
                 catch (FormatException)
                 {
-                    Console.WriteLine("Invalid option. Please enter an integer value.");
+                    Console.WriteLine("\nInvalid option. Please enter an integer value.\n");
                 }
             }
         }
 
         public static IceCream CreateIceCream()
         {
-            Console.WriteLine("Options:\n[1] Cup\n[2] Cone\n[3] Waffle");
+            Console.WriteLine("-----------------");
+            Console.WriteLine("Ice Cream Options");
+            Console.WriteLine("-----------------");
+            Console.WriteLine("[1] Cup\n[2] Cone\n[3] Waffle");
+            Console.WriteLine();
 
             while (true)
             {
                 Console.Write("Choose your ice cream option: ");
                 string o = Console.ReadLine();
+                Console.WriteLine();
                 if (o == "1")
                 {
                     int s = ChooseScoops();
-                    Console.WriteLine();
                     List<Flavour> fList = ChooseFlavours(s);
-                    Console.WriteLine();
                     List<Topping> tList = ChooseToppings();
                     return new Cup(s, fList, tList);
                 }
@@ -517,6 +524,7 @@ namespace assignment
                     {
                         Console.Write("Would you like a dipped cone? (Y/N): ");
                         string oD = Console.ReadLine();
+                        Console.WriteLine();
                         if (oD.ToUpper() == "Y")
                         {
                             dipped = true;
@@ -529,13 +537,11 @@ namespace assignment
                         }
                         else
                         {
-                            Console.WriteLine("Invalid option. Please enter Y or N.");
+                            Console.WriteLine("Invalid option. Please enter Y or N.\n");
                         }
                     }
                     int s = ChooseScoops();
-                    Console.WriteLine();
                     List<Flavour> fList = ChooseFlavours(s);
-                    Console.WriteLine();
                     List<Topping> tList = ChooseToppings();
                     return new Cone(s, fList, tList, dipped);
                 }
@@ -543,11 +549,16 @@ namespace assignment
                 {
                     string wf;
 
-                    Console.WriteLine("Waffle Flavours:\n[1] Original\n[2] Red Velvet\n[3] Charcoal\n[4] Pandan");
+                    Console.WriteLine("---------------");
+                    Console.WriteLine("Waffle Flavours");
+                    Console.WriteLine("---------------");
+                    Console.WriteLine("[1] Original\n[2] Red Velvet\n[3] Charcoal\n[4] Pandan");
+                    Console.WriteLine();
                     while (true)
                     {
                         Console.Write("What flavour would you like?: ");
                         string oF = Console.ReadLine();
+                        Console.WriteLine();
                         if (oF == "1")
                         {
                             wf = "Original";
@@ -566,21 +577,19 @@ namespace assignment
                         }
                         else
                         {
-                            Console.WriteLine("Invalid option. Please enter 1, 2, 3, or 4.");
+                            Console.WriteLine("Invalid option. Please enter 1, 2, 3, or 4.\n");
                             continue;
                         }
                         break;
                     }
                     int s = ChooseScoops();
-                    Console.WriteLine();
                     List<Flavour> fList = ChooseFlavours(s);
-                    Console.WriteLine();
                     List<Topping> tList = ChooseToppings();
                     return new Waffle(s, fList, tList, wf);
                 }
                 else
                 {
-                    Console.WriteLine("Invalid option. Please enter 1, 2, or 3.");
+                    Console.WriteLine("Invalid option. Please enter 1, 2, or 3.\n");
                 }
             }
         }
@@ -593,9 +602,10 @@ namespace assignment
                 {
                     Console.Write("Choose your number of scoops (1/2/3): ");
                     int s = int.Parse(Console.ReadLine());
+                    Console.WriteLine();
                     if (s < 1 || s > 3)
                     {
-                        Console.WriteLine("Invalid option. Please enter 1, 2, or 3.");
+                        Console.WriteLine("Invalid option. Please enter 1, 2, or 3.\n");
                     }
                     else
                     {
@@ -604,7 +614,7 @@ namespace assignment
                 }
                 catch (FormatException)
                 {
-                    Console.WriteLine("Invalid option. Please enter an integer value.");
+                    Console.WriteLine("\nInvalid option. Please enter an integer value.\n");
                 }
             }
         }
@@ -613,13 +623,19 @@ namespace assignment
         {
             List<Flavour> fList = new List<Flavour>();
 
-            Console.WriteLine("Flavours:\n[1] Vanilla\n[2] Chocolate\n[3] Strawberry\n[4] Durian (Premium)\n[5] Ube (Premium)\n[6] Sea Salt (Premium)");
+            Console.WriteLine("------------------");
+            Console.WriteLine("Ice Cream Flavours");
+            Console.WriteLine("------------------");
+            Console.WriteLine("[1] Vanilla\n[2] Chocolate\n[3] Strawberry\n[4] Durian (Premium)\n[5] Ube (Premium)\n[6] Sea Salt (Premium)");
+            Console.WriteLine();
+            
             for (int i = 1; i <= s; i++)
             {
                 while (true)
                 {
                     Console.Write($"Choose flavour {i}: ");
                     string oF = Console.ReadLine();
+                    Console.WriteLine();
                     if (oF == "1")
                     {
                         AddFlavour("Vanilla", false, fList);
@@ -647,7 +663,7 @@ namespace assignment
                     }
                     else
                     {
-                        Console.WriteLine("Invalid option. Please enter 1, 2, 3, 4, 5, or 6.");
+                        Console.WriteLine("Invalid option. Please enter 1, 2, 3, 4, 5, or 6.\n");
                         continue;
                     }
                     break;
@@ -677,7 +693,11 @@ namespace assignment
             List<Topping> toppings = new List<Topping>();
             int oT;
 
-            Console.WriteLine("Toppings:\n[1] Sprinkles\n[2] Mochi\n[3] Sago\n[4] Oreos");
+            Console.WriteLine("--------");
+            Console.WriteLine("Toppings");
+            Console.WriteLine("--------");
+            Console.WriteLine("[1] Sprinkles\n[2] Mochi\n[3] Sago\n[4] Oreos");
+            Console.WriteLine();
 
             while (true)
             {
@@ -685,14 +705,15 @@ namespace assignment
                 {
                     Console.Write("How many toppings would you like? (0/1/2/3/4): ");
                     oT = int.Parse(Console.ReadLine());
+                    Console.WriteLine();
                     if (oT == 0)
                     {
-                        Console.WriteLine("No toppings chosen.");
+                        Console.WriteLine("No toppings chosen.\n");
                         return toppings;
                     }
                     else if (oT == 4)
                     {
-                        Console.WriteLine("Adding all toppings...");
+                        Console.WriteLine("Adding all toppings...\n");
                         toppings.Add(new Topping("Sprinkles"));
                         toppings.Add(new Topping("Mochi"));
                         toppings.Add(new Topping("Sago"));
@@ -705,12 +726,12 @@ namespace assignment
                     }
                     else
                     {
-                        Console.WriteLine("You may only have 0, 1, 2, 3, or 4 toppings. Please try again.");
+                        Console.WriteLine("You may only have 0, 1, 2, 3, or 4 toppings. Please try again.\n");
                     }
                 }
                 catch (FormatException)
                 {
-                    Console.WriteLine("Invalid option. Please enter 0, 1, 2, 3, or 4.");
+                    Console.WriteLine("\nInvalid option. Please enter 0, 1, 2, 3, or 4.\n");
                 }
             }
 
@@ -720,6 +741,7 @@ namespace assignment
                 {
                     Console.Write($"Choose topping {i}: ");
                     string oTT = Console.ReadLine();
+                    Console.WriteLine();
                     if (oTT == "1")
                     {
                         if (HasTopping("Sprinkles", toppings))
@@ -754,7 +776,7 @@ namespace assignment
                     }
                     else
                     {
-                        Console.WriteLine("Invalid option. Please enter 1, 2, 3, or 4.");
+                        Console.WriteLine("Invalid option. Please enter 1, 2, 3, or 4.\n");
                         continue;
                     }
                     break;
@@ -770,7 +792,7 @@ namespace assignment
                 {
                     if (listTopping.Type == topping)
                     {
-                        Console.WriteLine("Cannot have multiple of the same topping.");
+                        Console.WriteLine("Cannot have multiple of the same topping.\n");
                         return true;
                     }
                 }
@@ -780,7 +802,7 @@ namespace assignment
 
         // advanced (a)
         // to associate order with member, check and match the order id (unique among all orders!!)
-        static Order Checkout(Queue<Order> regQ, Queue<Order> goldQ, List<Customer> cList)
+        static void Checkout(Queue<Order> regQ, Queue<Order> goldQ, List<Customer> cList)
         {
             Order order = new Order();
             Customer customer = new Customer();
@@ -790,9 +812,16 @@ namespace assignment
             {
                 order = goldQ.Dequeue();
             }
-            else
+            else if (regQ.Count > 0)
             {
                 order = regQ.Dequeue();
+            }
+            else
+            {
+                Console.WriteLine("-------------------");
+                Console.WriteLine("No orders in queue.");
+                Console.WriteLine("-------------------");
+                return;
             }
 
             int cIndex = 0;
@@ -807,23 +836,35 @@ namespace assignment
                 }
             }
 
+            Console.WriteLine($"Customer Name: {customer.Name}\nMember ID: {customer.MemberId}");
+            Console.WriteLine();
+            Console.WriteLine("-------------------");
+            Console.WriteLine("Ice Creams In Order");
+            Console.WriteLine("-------------------");
+
+            // display all ice creams and add to bill
             double total = 0;
-            // display all ice creams
-            foreach (IceCream ic in order.IceCreamList)
+            for (int i = 0; i < order.IceCreamList.Count; i++)
             {
-                Console.WriteLine(ic.ToString());
-                total += ic.CalculatePrice();
+                Console.WriteLine();
+                Console.WriteLine($"Ice cream [{i + 1}]\n{order.IceCreamList[i].ToString()}\n");
+                Console.WriteLine("---");
+                total += order.IceCreamList[i].CalculatePrice();
             }
 
             Console.WriteLine();
 
             // display bill
+            Console.WriteLine("--------------------------");
             Console.WriteLine($"Total bill amount: ${total:F2}");
+            Console.WriteLine("--------------------------");
 
             Console.WriteLine();
 
             // display member status & points
-            Console.WriteLine($"Customer membership status: {customer.Rewards.Tier}\nPoints: {customer.Rewards.Points}");
+            Console.WriteLine("----------------------------");
+            Console.WriteLine($"Membership status: {customer.Rewards.Tier}\nPoints: {customer.Rewards.Points}");
+            Console.WriteLine("----------------------------");
 
             Console.WriteLine();
 
@@ -832,7 +873,9 @@ namespace assignment
             // check if bday
             if (customer.IsBirthday())
             {
+                Console.WriteLine("---------------------------------------------------------------------------------------------");
                 Console.WriteLine("Happy birthday! As a gift, the most expensive ice cream in your order will be free of charge.");
+                Console.WriteLine("---------------------------------------------------------------------------------------------");
 
                 double free = 0;
                 // checking for most expensive ice cream, then minus its cost from total
@@ -852,7 +895,9 @@ namespace assignment
             // check if punch card complete, and if there are remaining ice creams to give discount to (ie. birthday hasnt already made order free)
             if (customer.Rewards.PunchCard == 10 && total != 0)
             {
+                Console.WriteLine("------------------------------------------------------------------------------------------------------------");
                 Console.WriteLine("Congratulations! You've completed your punch card. The first ice cream in your order will be free of charge.");
+                Console.WriteLine("------------------------------------------------------------------------------------------------------------");
 
                 // checks whether icecreamlist[0] has already been given free from bday gift
                 if (bdayIC == 1)
@@ -881,18 +926,19 @@ namespace assignment
                     try
                     {
                         int pts = int.Parse(Console.ReadLine());
+                        Console.WriteLine();
                         double discount = pts * 0.02;
                         if (pts < 0)
                         {
-                            Console.WriteLine("You may not enter a negative number. Please try again.");
+                            Console.WriteLine("You may not enter a negative number. Please try again.\n");
                         }
                         else if (pts > customer.Rewards.Points)
                         {
-                            Console.WriteLine($"You don't have enough points for that. Please try again. (Current point total: {customer.Rewards.Points})");
+                            Console.WriteLine($"You don't have enough points for that. Please try again. (Current point total: {customer.Rewards.Points})\n");
                         }
                         else if (discount > total)
                         {
-                            Console.WriteLine($"You may not redeem for more than your bill total. Please try again. (Current bill total: ${total:F2}, equivalent to {Math.Floor(total/0.02)} points)");
+                            Console.WriteLine($"You may not redeem for more than your bill total. Please try again. (Current bill total: ${total:F2}, equivalent to {Math.Floor(total/0.02)} points)\n");
                         }
                         else
                         {
@@ -903,17 +949,21 @@ namespace assignment
                     }
                     catch (FormatException)
                     {
-                        Console.WriteLine("Please enter an integer value.");
+                        Console.WriteLine("\nPlease enter an integer value.\n");
                     }
                 }
             }
 
             // display the final total bill amount
+            Console.WriteLine("-------------------------------");
             Console.WriteLine($"Final total bill amount: ${total:F2}");
+            Console.WriteLine("-------------------------------");
+            Console.WriteLine();
 
             // prompt user to press any key to make payment
-            Console.Write("Press any key to make payment");
-            Console.ReadLine();
+            Console.Write("Press any key to make payment ");
+            Console.ReadKey();
+            Console.WriteLine();
 
             // increment the punch card for every ice cream in the order 
             foreach (IceCream ic in order.IceCreamList)
@@ -945,7 +995,7 @@ namespace assignment
             customer.OrderHistory.Add(order);
 
             cList[cIndex] = customer;
-            return order;
+            return;
         }
 
         static int SelectCustomer(List<Customer> customerList)

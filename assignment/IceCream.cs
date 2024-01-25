@@ -43,7 +43,10 @@ namespace assignment
             string f = "";
             foreach (var item in Flavours)
             {
-                f += item.Type + " ";
+                for (int i = 0; i < item.Quantity; i++)
+                {
+                    f += item.Type + " ";
+                }
             }
             f = f.Remove(f.Length - 1);
             string t = "";

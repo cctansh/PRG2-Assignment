@@ -54,7 +54,7 @@ namespace assignment
         
         public override string ToString()
         {
-            return base.ToString() + $", Waffle Flavour: {WaffleFlavour}";
+            return base.ToString() + $"\nWaffle Flavour: {WaffleFlavour}";
         }
 
     }

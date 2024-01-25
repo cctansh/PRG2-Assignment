@@ -942,7 +942,7 @@ namespace assignment
                         }
                         else
                         {
-                            total += discount;
+                            total -= discount;
                             customer.Rewards.RedeemPoints(pts);
                             break;
                         }

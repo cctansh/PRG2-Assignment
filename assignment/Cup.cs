@@ -16,9 +16,6 @@ namespace assignment
 
         public override double CalculatePrice()
         {
-            // Base price for Cone
-            double basePrice = 4.00;
-
             // Additional cost for scoops
             double scoopPrice = Scoops switch
             {

@@ -57,31 +57,42 @@ namespace assignment
 
             while (true)
             {
+                // header
                 Console.WriteLine("----------------");
                 Console.WriteLine("Adding ice cream");
                 Console.WriteLine("----------------");
                 Console.WriteLine();
+
+                // creating ice cream (see program)
                 IceCream ic = Program.CreateIceCream();
+
+                // adding ice cream to order
                 cOrder.AddIceCream(ic);
+
+                // check if want to add more ice cream
                 while (true)
                 {
+                    // user input
                     Console.Write("Would you like to add another ice cream to your order? (Y/N): ");
                     o = Console.ReadLine();
                     Console.WriteLine();
+
+                    // if valid, break loop and continue rest of method
                     if (o.ToUpper() == "Y" || o.ToUpper() == "N")
                     {
                         break;
                     }
-                    else
+                    else // if invalid, repeat asking if they want another ice cream
                     {
                         Console.WriteLine("Invalid option. Please enter Y or N.\n");
                     }
                 }
-                if (o.ToUpper() == "N")
+                if (o.ToUpper() == "N") // if no, end method here
                 {
                     Console.WriteLine("Order created.");
                     return cOrder;
                 }
+                // if yes, continue looping to create and add another ice cream
             }
         }
         public bool IsBirthday()

@@ -40,10 +40,12 @@ namespace assignment
         }
         public void ModifyIceCream(int c)
         {
+            //assigning ice cream
             IceCream currentIC = iceCreamList[c - 1];
 
             while (true)
             {
+                // display modify ice cream menu
                 Console.WriteLine("-------------------");
                 Console.WriteLine("Modifying Ice Cream");
                 Console.WriteLine("-------------------");
@@ -53,114 +55,131 @@ namespace assignment
                 Console.WriteLine("[4] Toppings");
                 Console.WriteLine("[0] Exit");
                 Console.WriteLine();
+
+                // user input
                 Console.Write("What would you like to modify?: ");
                 string option = Console.ReadLine();
                 Console.WriteLine();
 
                 if (option == "1")
                 {
-                    currentIC = ChangeOption(currentIC);
+                    currentIC = ChangeOption(currentIC); // update ice cream
                     Console.WriteLine();
                 }
                 else if (option == "2")
                 {
                     int s = Program.ChooseScoops();
-                    currentIC.Scoops = s;
+                    currentIC.Scoops = s; // update ice cream
 
                     Console.WriteLine("Now selecting flavours to correspond to your new number of scoops...\n");
 
                     List<Flavour> flavours = Program.ChooseFlavours(currentIC.Scoops);
-                    currentIC.Flavours = flavours;
+                    currentIC.Flavours = flavours; // update ice cream
                 }
                 else if (option == "3")
                 {
                     List<Flavour> flavours = Program.ChooseFlavours(currentIC.Scoops);
-                    currentIC.Flavours = flavours;
+                    currentIC.Flavours = flavours; // update ice cream
                 }
                 else if (option == "4")
                 {
                     List<Topping> toppings = Program.ChooseToppings();
-                    currentIC.Toppings = toppings;
+                    currentIC.Toppings = toppings; // update ice cream
                 }
-                else if (option == "0")
+                else if (option == "0") // exit
                 {
                     Console.WriteLine("------------------------");
                     Console.WriteLine("Modifications finalised.");
                     Console.WriteLine("------------------------");
+
                     return;
                 }
-                else
+                else // invalid option
                 {
                     Console.WriteLine("Invalid option. Please enter 1, 2, 3, 4, or 0.");
                     Console.WriteLine();
                     continue;
                 }
-                iceCreamList[c - 1] = currentIC;
+                iceCreamList[c - 1] = currentIC; // update actual ice cream in the list
+
+                //display current state of ice cream
+                // header
                 Console.WriteLine("------------------");
                 Console.WriteLine("Modified Ice Cream");
                 Console.WriteLine("------------------");
+                // ice cream
                 Console.WriteLine(currentIC.ToString());
                 Console.WriteLine();
             }
             
             IceCream ChangeOption(IceCream cIC)
             {
+                // display ice cream options
                 Console.WriteLine("-----------------");
                 Console.WriteLine("Ice Cream Options");
                 Console.WriteLine("-----------------");
                 Console.WriteLine("[1] Cup\n[2] Cone\n[3] Waffle");
                 Console.WriteLine();
+
                 while (true)
                 {
+                    // user input
                     Console.Write("Please choose your ice cream option: ");
                     string o = Console.ReadLine();
-                    if (o == "1")
+
+                    if (o == "1") // cup
                     {
                         if (cIC is Cup)
                         {
                             Console.WriteLine("\nYour ice cream is already in a cup!");
-                            return cIC;
+                            return cIC; // no changes, return same ice cream
                         }
                         else
                         {
-                            return new Cup(cIC.Scoops, cIC.Flavours, cIC.Toppings);
+                            return new Cup(cIC.Scoops, cIC.Flavours, cIC.Toppings); 
                         }
                     }
-                    else if (o == "2")
+                    else if (o == "2") // cone
                     {
                         Console.WriteLine();
-                        if (cIC is Cone)
+
+                        if (cIC is Cone) // alerting user, then continue method
                         {
-                            Console.WriteLine("Your ice cream is already in a cone.");
+                            Console.WriteLine("Your ice cream is already in a cone."); 
                             Console.WriteLine();
                         }
 
                         while (true)
                         {
+                            // check dipped cone
                             Console.Write("Would you like a dipped cone? (Y/N): ");
                             string oD = Console.ReadLine();
-                            if (oD.ToUpper() == "Y")
+
+                            if (oD.ToUpper() == "Y") // yes
                             {
                                 return new Cone(cIC.Scoops, cIC.Flavours, cIC.Toppings, true);
                             }
-                            else if (oD.ToUpper() == "N")
+                            else if (oD.ToUpper() == "N") // no
                             {
                                 return new Cone(cIC.Scoops, cIC.Flavours, cIC.Toppings, false);
                             }
-                            else
+                            else // invalid, repeat asking for dipped cone
                             {
                                 Console.WriteLine("\nInvalid option. Please enter Y or N.\n");
                             }
                         }
                     }
-                    else if (o == "3")
+                    else if (o == "3") // waffle
                     {
                         Console.WriteLine();
-                        if (cIC is Waffle)
+
+                        if (cIC is Waffle) // alerting user
                         {
                             Console.WriteLine("Your ice cream is already in a waffle.");
                             Console.WriteLine();
                         }
+
+                        //display waffle flavours
                         Console.WriteLine("---------------");
                         Console.WriteLine("Waffle Flavours");
                         Console.WriteLine("---------------");
@@ -169,8 +188,10 @@ namespace assignment
                         
                         while (true)
                         {
+                            // user input
                             Console.Write("What flavour would you like?: "); 
                             string oF = Console.ReadLine();
+
                             if (oF == "1")
                             {
                                 return new Waffle(cIC.Scoops, cIC.Flavours, cIC.Toppings, "Original");
@@ -187,13 +208,13 @@ namespace assignment
                             {
                                 return new Waffle(cIC.Scoops, cIC.Flavours, cIC.Toppings, "Pandan");
                             }
-                            else
+                            else // invalid option, repeat asking for waffle flavour
                             {
                                 Console.WriteLine("\nInvalid option. Please enter 1, 2, 3, or 4.\n");
                             }
                         }
                     }
-                    else
+                    else // invalid ice cream option, repeat asking (cup/cone/waffle)
                     {
                         Console.WriteLine("Invalid option. Please enter 1, 2, or 3.");
                         Console.WriteLine();

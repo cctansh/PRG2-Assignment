@@ -8,7 +8,13 @@ namespace assignment
 {
     internal class Waffle : IceCream
     {
-        public string WaffleFlavour;
+        private string waffleFlavour;
+
+        public string WaffleFlavour
+        {
+            get { return waffleFlavour; }
+            set { waffleFlavour = value;}
+        }
 
         public Waffle() { }
 

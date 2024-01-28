@@ -9,7 +9,13 @@ namespace assignment
 {
     internal class Cone : IceCream
     {
-        public bool Dipped;
+        private bool dipped;
+
+        public bool Dipped
+        {
+            get { return dipped; }
+            set { dipped = value; }
+        }
 
         public Cone() { }
 

@@ -31,7 +31,8 @@ namespace assignment
         private List<Order> orderHistory;
         public List<Order> OrderHistory
         {
-            get => orderHistory; set => orderHistory = value;
+            get => orderHistory ?? (orderHistory = new List<Order>());
+            set => orderHistory = value;
         }
         private PointCard rewards;
         public PointCard Rewards
@@ -54,6 +55,12 @@ namespace assignment
 
             // id is temp id, to modify in program based on orderList
             Order cOrder = new Order(0, DateTime.Now);
+
+            // Ensure that orderHistory is not null
+            if (OrderHistory == null)
+            {
+                OrderHistory = new List<Order>();
+            }
 
             while (true)
             {
@@ -80,6 +87,8 @@ namespace assignment
                 if (o.ToUpper() == "N")
                 {
                     Console.WriteLine("Order created.");
+                    // Add the created order to the order history
+                    OrderHistory.Add(cOrder);
                     return cOrder;
                 }
             }
@@ -99,7 +108,7 @@ namespace assignment
         {
             string h = "";
             foreach (Order o in orderHistory)
-            {
+            { 
                 h += o.ToString();
             }
             return $"Name: {Name}\nMember ID: {MemberId}\nDoB: {Dob.ToString("dd/MM/yyyy")}\nTier: {Rewards.Tier}";

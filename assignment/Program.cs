@@ -3,9 +3,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
+using System.Globalization;
 using System.IO;
 using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace assignment
 {
@@ -48,8 +50,10 @@ namespace assignment
                     Console.WriteLine("Register a new customer");
                     Console.WriteLine("=======================");
                     Console.WriteLine();
-                    RegisterNewCustomer();
+                    Dictionary<int, Customer>? customerDict = null;
+                    RegisterNewCustomer(ref customerDict);
                 }
+
                 else if (o == "4")
                 {
                     Console.WriteLine("=========================");
@@ -231,60 +235,67 @@ namespace assignment
         }
 
         // Q3:
-        static void RegisterNewCustomer()
+
+        // Modify AddCustomer to accept a nullable dictionary
+        static void AddCustomer(ref Dictionary<int, Customer>? customerDict, Customer newCustomer)
         {
-            Console.WriteLine("Register a new customer:");
-
-            // Prompt user for information
-            Console.Write("Enter name: ");
-            string name = Console.ReadLine();
-
-            Console.Write("Enter ID number: ");
-            int memberId = int.Parse(Console.ReadLine());
-
-            Console.Write("Enter date of birth (e.g., MM/dd/yyyy): ");
-            DateTime dob = DateTime.Parse(Console.ReadLine());
-
-            // Create a new customer object
-            Customer newCustomer = new Customer
+            // Check if the customerDict is null
+            if (customerDict == null)
             {
-                Name = name,
-                MemberId = memberId,
-                Dob = dob,
-                Rewards = new PointCard(0, 0),  // Creating a new PointCard for the customer
-            };
+                customerDict = new Dictionary<int, Customer>();
+            }
 
-            // Append customer information to customers.csv file
-            AppendCustomerToCsv(newCustomer);
-
-            Console.WriteLine("Customer registered successfully!");
+            // Add the new customer to the dictionary
+            customerDict.Add(newCustomer.MemberId, newCustomer);
         }
 
-        static void AppendCustomerToCsv(Customer customer)
-        {
-            // Specify the path to the CSV file
-            string csvFilePath = "customers.csv";
 
-            // Append customer information to the file
-            using (StreamWriter writer = File.AppendText(csvFilePath))
+        static void RegisterNewCustomer(ref Dictionary<int, Customer>? customerDict)
+        {
+            while (true)
             {
-                int i = 1;
-                writer.WriteLine($"[{i}] " + customer.ToString());
-                i++;
+                try
+                {
+                    Console.Write("Enter customer's name: ");
+                    string name = Console.ReadLine();
+                    if (string.IsNullOrEmpty(name))
+                    {
+                        Console.WriteLine("Enter a valid name");
+                        continue;
+                    }
+
+                    Console.Write("Enter Membership ID number: ");
+                    int memberId;
+                    while (!int.TryParse(Console.ReadLine(), out memberId))
+                    {
+                        Console.WriteLine("Invalid input. Please enter a valid integer for Member ID.");
+                        Console.Write("Enter Membership ID number: ");
+                    }
+
+                    Console.Write("Enter Customer's Date-Of-Birth (dd/MM/yyyy): ");
+                    string dateOfBirth = Console.ReadLine();
+                    DateTime dob = DateTime.ParseExact(dateOfBirth, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+
+                    Customer newCustomer = new Customer(name, memberId, dob);
+
+                    PointCard newPointCard = new PointCard(0, 0);
+                    newPointCard.Tier = "Ordinary";
+                    newCustomer.Rewards = newPointCard;
+
+                    // Pass the dictionary by reference
+                    AddCustomer(ref customerDict, newCustomer);
+
+                    Console.WriteLine("Registration successful!");
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"An error occurred: {ex.Message}");
+                }
             }
         }
 
-        // Q4: Create a customer's order
-        /*static void CreateCustomerOrder()
-        {
-            Console.WriteLine("List of customers:");
-            DisplayCustomers(...);
-
-            Console.Write("Enter the MemberId of the customer: ");
-            int memberId = int.Parse(Console.ReadLine());*/
-
-
-        //for testing
+        // Q4: 
         static void MakeCOrder(List<Customer> customerList, List<Order> orderList, Queue<Order> regQ, Queue<Order> goldQ)
         {
             int cIndex = SelectCustomer(customerList);

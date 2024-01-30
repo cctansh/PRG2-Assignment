@@ -301,11 +301,12 @@ namespace assignment
             }
         }
 
+        // Q4:
         static void MakeCOrder(List<Customer> customerList, List<Order> orderList, Queue<Order> regQ, Queue<Order> goldQ)
         {
             // selecting customer
             int cIndex = SelectCustomer(customerList);
-            Customer selectedC = customerList[cIndex - 1];
+            Customer selectedC = customerList[cIndex];
 
             Console.WriteLine();
 
@@ -343,7 +344,7 @@ namespace assignment
             }
 
             // setting order as customer current order
-            customerList[cIndex - 1].CurrentOrder = newO;
+            customerList[cIndex].CurrentOrder = newO;
 
             // if customer is gold tier, queue in gold, else queue in regular
             if (selectedC.Rewards.Tier == "Gold")
@@ -364,7 +365,7 @@ namespace assignment
         {
             // selecting customer
             int cIndex = SelectCustomer(customerList);
-            Customer selectedC = customerList[cIndex - 1];
+            Customer selectedC = customerList[cIndex];
 
             Console.WriteLine();
 
@@ -421,7 +422,7 @@ namespace assignment
         {
             // selecting customer
             int cIndex = SelectCustomer(customerList);
-            Customer selectedC = customerList[cIndex - 1];
+            Customer selectedC = customerList[cIndex];
 
             Console.WriteLine();
 
@@ -487,7 +488,7 @@ namespace assignment
 
                 // update customer in list
                 selectedC.CurrentOrder = cOrder;
-                customerList[cIndex - 1] = selectedC;
+                customerList[cIndex] = selectedC;
 
                 // display order
                 Console.WriteLine("--------------");
@@ -560,7 +561,7 @@ namespace assignment
                     }
                     else // if valid, return user input
                     {
-                        return option;
+                        return option - 1;
                     }
                 }
                 catch (FormatException) // if invalid, repeat (int.parse failed)
@@ -1125,7 +1126,7 @@ namespace assignment
 
                     if (cIndex > 0 && cIndex <= customerList.Count) // if valid option, return customer index
                     {
-                        return cIndex;
+                        return cIndex - 1;
                     }
 
                     // invalid option, not within list range

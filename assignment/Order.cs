@@ -41,7 +41,7 @@ namespace assignment
         public void ModifyIceCream(int c)
         {
             //assigning ice cream
-            IceCream currentIC = iceCreamList[c - 1];
+            IceCream currentIC = iceCreamList[c];
 
             while (true)
             {
@@ -100,7 +100,7 @@ namespace assignment
                     Console.WriteLine();
                     continue;
                 }
-                iceCreamList[c - 1] = currentIC; // update actual ice cream in the list
+                iceCreamList[c] = currentIC; // update actual ice cream in the list
 
                 //display current state of ice cream
                 // header
@@ -234,7 +234,7 @@ namespace assignment
                 return;
             }
 
-            IceCreamList.RemoveAt(c - 1);
+            IceCreamList.RemoveAt(c);
         }
 
         public double CalculateTotal()

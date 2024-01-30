@@ -54,8 +54,7 @@ namespace assignment
                     Console.WriteLine("Register a new customer");
                     Console.WriteLine("=======================");
                     Console.WriteLine();
-                    Dictionary<int, Customer>? customerDict = null;
-                    RegisterNewCustomer(ref customerDict);
+                    RegisterNewCustomer(customerList);
                 }
 
                 else if (o == "4")
@@ -96,8 +95,7 @@ namespace assignment
                     Console.WriteLine("Display monthly charged amounts breakdown and total charged amounts for the year");
                     Console.WriteLine("================================================================================");
                     Console.WriteLine();
-
-                    //DisplayMonthlyChargedAmounts(orders);
+                    DisplayMonthlyChargedAmounts(orderList);
                 }
                 else if (o == "0") // exit
                 {
@@ -242,21 +240,7 @@ namespace assignment
 
         // Q3:
 
-        // Modify AddCustomer to accept a nullable dictionary
-        static void AddCustomer(ref Dictionary<int, Customer>? customerDict, Customer newCustomer)
-        {
-            // Check if the customerDict is null
-            if (customerDict == null)
-            {
-                customerDict = new Dictionary<int, Customer>();
-            }
-
-            // Add the new customer to the dictionary
-            customerDict.Add(newCustomer.MemberId, newCustomer);
-        }
-
-
-        static void RegisterNewCustomer(ref Dictionary<int, Customer>? customerDict)
+        static void RegisterNewCustomer(List<Customer> cList)
         {
             while (true)
             {
@@ -284,12 +268,18 @@ namespace assignment
 
                     Customer newCustomer = new Customer(name, memberId, dob);
 
-                    PointCard newPointCard = new PointCard(0, 0);
-                    newPointCard.Tier = "Ordinary";
-                    newCustomer.Rewards = newPointCard;
+                    // Add customer to list
+                    cList.Add(newCustomer);
 
-                    // Pass the dictionary by reference
-                    AddCustomer(ref customerDict, newCustomer);
+                    // append to csv
+                    string csvFilePath = "customers.csv";
+
+                    using (StreamWriter writer = new StreamWriter(csvFilePath, true))
+                    {
+                        // Write the new customer information to the CSV file
+                        writer.WriteLine($"{newCustomer.Name},{newCustomer.MemberId},{newCustomer.Dob.ToString("dd/MM/yyyy")},"
+                                         + $"{newCustomer.Rewards.Tier},{newCustomer.Rewards.Points},{newCustomer.Rewards.PunchCard}");
+                    }
 
                     Console.WriteLine("Registration successful!");
                     break;
@@ -1141,7 +1131,7 @@ namespace assignment
 
 
         //Qu8
-        void DisplayMonthlyChargedAmounts(List<Order> orders)
+        static void DisplayMonthlyChargedAmounts(List<Order> orders)
         {
             bool InvalidYear = false;
             int year = 0;
@@ -1170,28 +1160,24 @@ namespace assignment
             Dictionary<int, List<Order>> ordersInYear = new Dictionary<int, List<Order>>();
 
             // Filter orders for the inputted year
-            /*
-            foreach (Order order in orders)
+            foreach (Order historyOrder in orders)
             {
-                foreach (Order historyOrder in order.OrderHistory)
+                DateTime? timeFulfilled = historyOrder.TimeFulfilled;
+                if (timeFulfilled != null && timeFulfilled.Value.Year == year)
                 {
-                    DateTime? timeReceived = historyOrder.TimeReceived;
-                    if (timeReceived.HasValue && timeReceived.Value.Year == year)
+                    int month = timeFulfilled.Value.Month;
+
+                    // If the month is not already a key in the dictionary, add it
+                    if (!ordersInYear.ContainsKey(month))
                     {
-                        int month = timeReceived.Value.Month;
-
-                        // If the month is not already a key in the dictionary, add it
-                        if (!ordersInYear.ContainsKey(month))
-                        {
-                            ordersInYear[month] = new List<Order>();
-                        }
-
-                        // Add the order to the list for that month
-                        ordersInYear[month].Add(historyOrder);
+                        ordersInYear[month] = new List<Order>();
                     }
+
+                    // Add the order to the list for that month
+                    ordersInYear[month].Add(historyOrder);
                 }
             }
-            */
+            
 
             // Initialize an array to store monthly totals
             double[] monthTotals = new double[12];

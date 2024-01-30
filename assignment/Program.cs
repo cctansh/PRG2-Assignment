@@ -926,7 +926,7 @@ namespace assignment
             int cIndex = 0;
             for (int i = 0; i < cList.Count; i++)
             {
-                if (cList[i].CurrentOrder.Id == order.Id)
+                if (cList[i].CurrentOrder != null && cList[i].CurrentOrder.Id == order.Id)
                 {
                     customer = cList[i];
                     cIndex = i; // tracks the customer's index in customer list

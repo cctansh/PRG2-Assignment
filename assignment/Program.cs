@@ -19,7 +19,7 @@ namespace assignment
             List<Customer> customerList = new List<Customer>();
             Queue<Order> regularOrders = new Queue<Order>();
             Queue<Order> goldOrders = new Queue<Order>();
-            // orderList is to assign order IDs
+            // keeps track of all orders made in the program
             List<Order> orderList = new List<Order>();
 
             // adding customers from customer.csv
@@ -97,8 +97,7 @@ namespace assignment
                     Console.WriteLine("================================================================================");
                     Console.WriteLine();
 
-                    List<Order> orders = orders.csv;
-                    DisplayMonthlyChargedAmounts(orders);
+                    //DisplayMonthlyChargedAmounts(orders);
                 }
                 else if (o == "0") // exit
                 {
@@ -302,11 +301,12 @@ namespace assignment
             }
         }
 
+        // Q4:
         static void MakeCOrder(List<Customer> customerList, List<Order> orderList, Queue<Order> regQ, Queue<Order> goldQ)
         {
             // selecting customer
             int cIndex = SelectCustomer(customerList);
-            Customer selectedC = customerList[cIndex - 1];
+            Customer selectedC = customerList[cIndex];
 
             Console.WriteLine();
 
@@ -319,14 +319,32 @@ namespace assignment
             // making order (see Customer class)
             Order newO = selectedC.MakeOrder();
 
-            // setting order ID
-            newO.Id = orderList.Count + 1;
+            // setting order id and adding it to order list
+            if (selectedC.CurrentOrder != null) // if customer is overwriting their current order
+            {
+                for (int i = 0; i < orderList.Count; i++)
+                {
+                    if (orderList[i].Id == selectedC.CurrentOrder.Id) // going through order list until their order matches
+                    {
+                        // set the new order id to the same id
+                        newO.Id = orderList[i].Id;
+
+                        // change that order in the list to the new order
+                        orderList[i] = newO;
+                    }
+                }
+            }
+            else // if customer is making brand new order
+            {
+                // assign new order id
+                newO.Id = orderList.Count + 1;
+
+                // add to order list
+                orderList.Add(newO);
+            }
 
             // setting order as customer current order
-            customerList[cIndex - 1].CurrentOrder = newO;
-
-            // adding to orderlist (keeps track of all orders made in program)
-            orderList.Add(newO);
+            customerList[cIndex].CurrentOrder = newO;
 
             // if customer is gold tier, queue in gold, else queue in regular
             if (selectedC.Rewards.Tier == "Gold")
@@ -347,7 +365,7 @@ namespace assignment
         {
             // selecting customer
             int cIndex = SelectCustomer(customerList);
-            Customer selectedC = customerList[cIndex - 1];
+            Customer selectedC = customerList[cIndex];
 
             Console.WriteLine();
 
@@ -404,7 +422,7 @@ namespace assignment
         {
             // selecting customer
             int cIndex = SelectCustomer(customerList);
-            Customer selectedC = customerList[cIndex - 1];
+            Customer selectedC = customerList[cIndex];
 
             Console.WriteLine();
 
@@ -470,7 +488,7 @@ namespace assignment
 
                 // update customer in list
                 selectedC.CurrentOrder = cOrder;
-                customerList[cIndex - 1] = selectedC;
+                customerList[cIndex] = selectedC;
 
                 // display order
                 Console.WriteLine("--------------");
@@ -543,7 +561,7 @@ namespace assignment
                     }
                     else // if valid, return user input
                     {
-                        return option;
+                        return option - 1;
                     }
                 }
                 catch (FormatException) // if invalid, repeat (int.parse failed)
@@ -1108,7 +1126,7 @@ namespace assignment
 
                     if (cIndex > 0 && cIndex <= customerList.Count) // if valid option, return customer index
                     {
-                        return cIndex;
+                        return cIndex - 1;
                     }
 
                     // invalid option, not within list range
@@ -1152,6 +1170,7 @@ namespace assignment
             Dictionary<int, List<Order>> ordersInYear = new Dictionary<int, List<Order>>();
 
             // Filter orders for the inputted year
+            /*
             foreach (Order order in orders)
             {
                 foreach (Order historyOrder in order.OrderHistory)
@@ -1172,6 +1191,7 @@ namespace assignment
                     }
                 }
             }
+            */
 
             // Initialize an array to store monthly totals
             double[] monthTotals = new double[12];

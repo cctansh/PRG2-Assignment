@@ -15,6 +15,12 @@ namespace assignment
         {
             get => id; set => id = value;
         }
+        private List<Order> orderHistory;
+        public List<Order> OrderHistory
+        {
+            get => orderHistory ?? (orderHistory = new List<Order>());
+            set => orderHistory = value;
+        }
         private DateTime timeReceived;
         public DateTime TimeReceived
         {

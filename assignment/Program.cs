@@ -19,7 +19,7 @@ namespace assignment
             List<Customer> customerList = new List<Customer>();
             Queue<Order> regularOrders = new Queue<Order>();
             Queue<Order> goldOrders = new Queue<Order>();
-            // orderList is to assign order IDs
+            // keeps track of all orders made in the program
             List<Order> orderList = new List<Order>();
 
             // adding customers from customer.csv
@@ -97,8 +97,7 @@ namespace assignment
                     Console.WriteLine("================================================================================");
                     Console.WriteLine();
 
-                    List<Order> orders = orders.csv;
-                    DisplayMonthlyChargedAmounts(orders);
+                    //DisplayMonthlyChargedAmounts(orders);
                 }
                 else if (o == "0") // exit
                 {
@@ -319,14 +318,32 @@ namespace assignment
             // making order (see Customer class)
             Order newO = selectedC.MakeOrder();
 
-            // setting order ID
-            newO.Id = orderList.Count + 1;
+            // setting order id and adding it to order list
+            if (selectedC.CurrentOrder != null) // if customer is overwriting their current order
+            {
+                for (int i = 0; i < orderList.Count; i++)
+                {
+                    if (orderList[i].Id == selectedC.CurrentOrder.Id) // going through order list until their order matches
+                    {
+                        // set the new order id to the same id
+                        newO.Id = orderList[i].Id;
+
+                        // change that order in the list to the new order
+                        orderList[i] = newO;
+                    }
+                }
+            }
+            else // if customer is making brand new order
+            {
+                // assign new order id
+                newO.Id = orderList.Count + 1;
+
+                // add to order list
+                orderList.Add(newO);
+            }
 
             // setting order as customer current order
             customerList[cIndex - 1].CurrentOrder = newO;
-
-            // adding to orderlist (keeps track of all orders made in program)
-            orderList.Add(newO);
 
             // if customer is gold tier, queue in gold, else queue in regular
             if (selectedC.Rewards.Tier == "Gold")
@@ -1152,6 +1169,7 @@ namespace assignment
             Dictionary<int, List<Order>> ordersInYear = new Dictionary<int, List<Order>>();
 
             // Filter orders for the inputted year
+            /*
             foreach (Order order in orders)
             {
                 foreach (Order historyOrder in order.OrderHistory)
@@ -1172,6 +1190,7 @@ namespace assignment
                     }
                 }
             }
+            */
 
             // Initialize an array to store monthly totals
             double[] monthTotals = new double[12];
